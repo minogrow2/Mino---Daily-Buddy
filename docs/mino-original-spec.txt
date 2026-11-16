@@ -1,0 +1,1150 @@
+Project: Mino — My Personal Life Journal
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+16
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Mobile-first
+AI-powered
+Personal productivity
+
+MINO.
+A little progress every day. A little more life every day.
+
+Personal Journal · Life Tracker · Learning Companion · Goal Management
+
+1. Main concept and purpose
+MINO — Personal Life Journal and Productivity System
+Project Overview
+Build a beautiful, interactive, responsive personal journal website called Mino.
+
+Mino is my personal life management system. Its purpose is to help me break up with doom scrolling, develop valuable skills, improve myself, manage my time, and appreciate life outside my phone.
+
+I want to document my growth and make meaningful progress every day without sacrificing my personal happiness.
+
+The website must balance three important aspects of my life:
+1. Personal Development: Learning, skill-building, career preparation, finance, AI, and technology.
+2. Physical and Personal Growth: Fitness, appearance, health habits, confidence, and self-care.
+3. Living Life: Socializing, hobbies, exploring, reading, watching meaningful content, relaxing, and enjoying my time offline.
+The website must not become another source of screen addiction. It should encourage me to spend less time on my phone and more time experiencing the real world.
+
+The overall experience should feel like a cozy digital diary combined with a sophisticated productivity dashboard.
+
+
+
+
+2. Daily Buddy — Meet Mino!
+
+
+
+
+
+
+
+
+
+
+Mino
+Daily companion
+Kind · Engaging · Supportive · Curious · Non-judgmental
+
+
+Mino is the main AI companion of the website.
+
+I want Mino to feel like a genuine friend, not a robotic productivity assistant.
+Mino's Personality and Instructions
+Hello! I'm Mino!
+
+I'm your daily buddy, and I'm here to make your days easier, more meaningful, and more productive.
+
+I want to get to know you better, understand your interests, listen to your thoughts, and help you navigate your everyday life.
+
+I know you're working on something important: breaking up with doom scrolling and discovering the world outside your phone.
+
+I want to help you make the most of your time.
+
+My responsibilities include:
+- Greet you every day with a warm and engaging message.
+- Ask how you're feeling and how your day is going.
+- Help you organize your daily tasks.
+- Remind you of your weekly and monthly goals.
+- Encourage consistency without making you feel guilty.
+- Celebrate even small accomplishments.
+- Listen when you want to vent, reflect, or share random thoughts.
+- Suggest meaningful activities when you're bored.
+- Encourage you to socialize, explore, read, exercise, and spend time offline.
+- Help you reflect on your screen time and digital habits.
+- Recognize patterns in your productivity, mood, and routines.
+I should never make you feel like your worth depends on productivity.
+
+If you miss a task, don't shame me. Help me understand what happened and start again.
+
+Sometimes I need motivation. Sometimes I need advice. Sometimes I just need someone to listen.
+
+Remember: The objective isn't to make every minute productive. It's to make every day meaningful.
+
+Let's make life happen outside the screen!
+
+
+
+
+Mino's daily interactions
+Mino should have the following features:
+- Morning greeting: Welcome me and show today's priorities.
+- Daily check-in: Ask about my mood, energy, and plans.
+- Task assistance: Help organize and prioritize tasks.
+- Boredom suggestions: Recommend offline activities instead of scrolling.
+- Evening reflection: Ask what I learned, accomplished, and enjoyed.
+- Weekly reflection: Analyze my habits and suggest improvements.
+Mino should have persistent memory of my goals, preferences, previous journal entries, and progress, subject to privacy controls.
+3. The Seven Life Goals
+This is the central goal management system.
+
+Every goal should have its own dedicated page, progress tracker, milestones, resources, and activity history.
+
+
+
+
+
+
+
+
+
+
+01. Finance Trading
+Active · November–December
+Learn financial markets, professional charting, strategy development, backtesting, and eventually prop firm trading.
+
+
+
+
+
+
+
+
+
+
+
+
+
+02. Learn AI
+Active · November
+Explore AI applications, Hermes, intelligent systems, AI agents, automation, and cybersecurity.
+
+
+
+
+
+
+
+
+
+
+
+
+
+03. Glow Up
+Daily habits
+Build a toned physique, improve personal care, develop confidence, and explore Y2K and cute fashion.
+
+
+
+
+
+
+
+
+
+
+
+
+
+04. Tech Development and Reverse Engineering
+Active exploration
+Develop websites, experiment with Linux, build home labs, explore AI agents, and learn reverse engineering in authorized environments.
+
+
+
+
+
+
+
+
+
+
+
+
+
+05. Internet Money
+Preparation phase
+Prepare for AI-assisted Whop clipping, video editing, content creation, and social media management.
+
+
+
+
+
+
+
+
+
+
+
+
+
+06. Watch and Read
+Flexible
+Replace mindless scrolling with meaningful videos, documentaries, books, articles, and educational content.
+
+
+
+
+
+
+
+
+
+
+
+
+
+07. CS Student Advantage
+Monthly learning
+Complete online courses, practice programming, strengthen computer science fundamentals, and build a competitive portfolio.
+
+
+
+4. Goal-specific tracking and milestones
+The AI coding agent should implement the following initial roadmap.
+Goal 01 — Finance Trading
+November–December 2026
+My trading learning roadmap has four stages.
+Timeline	Main focus
+Nov 1–7	Financial concepts and chart exploration
+Nov 8–14	Financial concepts and chart exploration
+Nov 15–21	Financial concepts and chart exploration
+Nov 22–30	Start structured backtesting
+December	Backtesting, strategy refinement, accuracy analysis
+
+Four major activities must be tracked:
+1. Information and learning: Concepts, terminology, market structure, risk management, and trading knowledge.
+2. Chart analysis: Daily chart observation, identifying patterns, and marking possible setups.
+3. Paper trading and backtesting: Testing strategies without risking actual money.
+4. Strategy accuracy: Tracking performance, win rate, risk-to-reward ratio, drawdown, and other relevant metrics.
+Include:
+- Daily trading learning log.
+- Chart analysis journal with screenshot uploads.
+- Strategy notebook.
+- Backtesting database.
+- Paper trading journal.
+- Weekly trading review.
+- Monthly trading performance report.
+Important: Do not automatically encourage live trading. Keep prop firm challenges and real-money trading locked as future milestones until I personally decide that I have sufficient knowledge, a tested strategy, and proper risk management.
+Goal 02 — Learn AI
+November 2026 exploration roadmap
+My primary focus is practical AI application.
+
+The website should let me freely explore AI instead of forcing a fixed curriculum.
+
+Track these activities:
+- Hermes installation and configuration.
+- Understanding Hermes capabilities.
+- Creating and managing AI agents.
+- Exploring agent skills and tools.
+- Experimenting with automation.
+- Building mini-projects.
+- Reverse engineering AI workflows.
+- Exploring intelligent systems.
+- AI applications in cybersecurity.
+- Progressively building more advanced projects.
+Every AI learning session should have:
+- What I explored.
+- What I learned.
+- What I configured.
+- What I built.
+- Problems encountered.
+- What I want to explore next.
+Include a project gallery to document my experiments.
+Goal 03 — Glow Up
+My goal is a healthy, toned appearance rather than extreme muscle building.
+
+Daily habit tracker:
+- Take Vitamin C and glutathione according to my chosen routine.
+- Complete a light home workout.
+- Drink 1.5 liters of water.
+- Be mindful of sugar intake.
+- Maintain balanced eating habits.
+- Complete my chosen lymphatic drainage/self-care routine.
+Additional features:
+- Workout journal with exercises, repetitions, sets, and duration.
+- Body and fitness progress journal (optional, private).
+- Skincare and self-care checklist.
+- Outfit wishlist.
+- Fashion inspiration gallery.
+- Clothing purchase tracker.
+- Wardrobe catalog.
+My fashion direction is Y2K and cute outfits. I currently have clothing orders from Pinduoduo, so include a clothing arrival tracker.
+
+Do not make the system encourage extreme dieting, excessive exercise, or appearance-based guilt. Fitness tracking should prioritize consistency and well-being.
+Goal 04 — Tech Development and Reverse Engineering
+Create a dedicated Tech Lab.
+
+Track projects such as:
+- Website development.
+- Personal productivity applications.
+- Digital journal development.
+- Home lab experiments.
+- Linux customization.
+- AI agent development.
+- Reverse engineering.
+- Cybersecurity experimentation.
+- Programming challenges.
+Every project must have a status:
+
+Idea → Planning → In Progress → Testing → Completed
+
+Each project should support descriptions, screenshots, code repository links, notes, technical problems, and progress logs.
+Goal 05 — Internet Money
+Not started — Preparation phase
+My initial business direction is AI-assisted content creation, particularly Whop clipping.
+
+The intended workflow includes:
+1. Learn AI video editing tools.
+2. Explore automated clipping workflows.
+3. Learn content repurposing.
+4. Experiment with video creation.
+5. Learn social media posting and management.
+6. Develop a content workflow.
+7. Eventually launch and monetize the project.
+Keep this goal in a preparation state until I manually activate it.
+
+Include a business idea notebook, tools directory, expense tracker, project milestones, and future income tracker.
+Goal 06 — Watch and Read
+Create a personal content library.
+
+Categories:
+- Educational YouTube videos.
+- Documentaries.
+- Technology.
+- Finance.
+- AI.
+- Cybersecurity.
+- Books.
+- Articles.
+- Entertainment.
+Allow me to save links, upload images of books or resources, add notes, and mark items as completed.
+
+Track meaningful content consumption rather than simply counting hours.
+Goal 07 — CS Student Advantage
+This is my academic and career-development tracker.
+
+I want to complete online courses monthly.
+
+Include:
+- Monthly course goals.
+- Course name and platform.
+- Lessons completed.
+- Certificates earned.
+- Programming exercises.
+- CS concepts learned.
+- Portfolio projects.
+- Skills acquired.
+Allow me to add courses at any time without changing the website structure.
+5. Main dashboard — Daily overview
+This is the first page I should see whenever I open the website.
+
+It should be visually beautiful, informative, and easy to navigate.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+14
+
+
+
+
+
+
+
+
+
+
+
+The dashboard should contain:
+
+A. Welcome section
+- Current date and day.
+- Personalized greeting from Mino.
+- Current mood.
+- A short motivational message.
+- Today's overall focus.
+B. Daily task checklist
+
+Display my recurring daily tasks:
+- [ ] Take Vitamin C and glutathione.
+- [ ] Light workout.
+- [ ] Drink 1.5L water.
+- [ ] Learn AI.
+- [ ] Learn Finance Trading.
+These must automatically reset for a new day without deleting previous records.
+
+Allow me to add, edit, reorder, and delete custom tasks.
+
+C. Today's priorities
+
+Display my three most important tasks, separate from recurring habits.
+
+D. Goal progress
+
+Show compact progress cards for all seven goals.
+
+E. Life balance
+
+Display three categories:
+- Learning and productivity.
+- Health and personal growth.
+- Personal life and enjoyment.
+F. Quick journal
+
+A small space to write something about my day without opening another page.
+
+G. Mino's suggestions
+
+Give personalized suggestions based on my unfinished tasks, previous activities, mood, and available time.
+6. Calendar — GitHub-style activity tracker
+
+
+
+
+
+
+
+
+github.com
+
+
+I specifically want a GitHub-inspired contribution calendar.
+
+Instead of tracking code contributions, it should track my daily life activities.
+
+Each day should have an activity intensity level based on meaningful activities completed.
+
+For example:
+- Learning AI.
+- Trading education.
+- Workout.
+- Reading.
+- Programming.
+- Socializing.
+- Personal activities.
+- Journaling.
+Use a soft pink-to-yellow intensity scale.
+
+Clicking a date should open a detailed daily record showing:
+- Completed tasks.
+- Goals worked on.
+- Time spent learning.
+- Mood.
+- Journal entry.
+- Photos.
+- Offline activities.
+- Screen time.
+Include monthly and yearly calendar views.
+
+Important: A day spent socializing, resting, or exploring outside should count as meaningful activity too. Do not define a successful day exclusively through work or learning.
+7. Productivity analytics
+
+
+
+
+
+
+
+
+dribbble.com
+
+
+Build a statistics page that gives me a visual understanding of my progress.
+
+Include:
+
+Daily analytics
+- Tasks completed versus planned.
+- Learning activities completed.
+- Habits maintained.
+- Time spent on personal activities.
+Weekly analytics
+- Weekly task completion percentage.
+- AI learning consistency.
+- Finance trading consistency.
+- Workout consistency.
+- Reading and watching activities.
+- Offline activities.
+- Screen time comparison.
+Monthly analytics
+- Goal progression.
+- Habit consistency.
+- Course completion.
+- Projects completed.
+- Total savings.
+- Personal growth summary.
+Use interactive charts and date filters.
+
+Do not create one arbitrary productivity score that determines how successful I am. Show individual metrics and let me understand my progress.
+8. Weekly screen time tracker
+This is an important feature because my main project is breaking up with doom scrolling.
+
+Create a dedicated screen time tracking section.
+
+Allow manual entry of daily screen time or integration with supported screen time data sources if available.
+
+Track:
+- Total screen time per day.
+- Weekly average.
+- Social media usage.
+- Most-used applications.
+- Previous week's screen time.
+- Percentage increase or decrease.
+Example:
+Day	Screen time
+Monday	4h 20m
+Tuesday	3h 50m
+Wednesday	3h 10m
+
+Show a weekly comparison chart.
+
+Calculate:
+
+Percentage reduction = (Previous week average − Current week average) ÷ Previous week average × 100.
+
+The goal is to gradually reduce unnecessary screen time, not to eliminate useful technology usage.
+9. Weekly savings tracker
+My weekly savings target is ₱1,000.
+
+Build a dedicated savings tracker.
+
+Features:
+- Weekly savings goal: ₱1,000.
+- Amount saved.
+- Remaining amount.
+- Weekly completion percentage.
+- Savings history.
+- Monthly savings summary.
+- Total accumulated savings.
+Include a visual progress bar.
+
+Allow me to record actual deposits and withdrawals separately. Never assume that money saved in one week automatically carries over as a new deposit in another week.
+
+Currency must be Philippine pesos (PHP).
+10. Journal and personal diary
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+13
+
+
+
+
+
+
+
+
+
+
+
+Create a dedicated journal page where I can freely express myself.
+
+I want different journal types:
+- Daily diary.
+- Random thoughts.
+- Personal opinions.
+- Life realizations.
+- Gratitude journal.
+- Things I experienced.
+- Things I want to remember.
+- Future plans.
+Allow:
+- Rich text writing.
+- Image uploads.
+- Multiple photos per entry.
+- Date and time stamps.
+- Tags.
+- Search and filters.
+- Favorite entries.
+Include a scrapbook-style gallery where photos and memories are displayed beautifully.
+
+The interface should feel like a personal diary, not a corporate note-taking application.
+11. Mood tracker
+Create a mood selection feature.
+
+At the beginning or end of every day, I should be able to select my mood.
+
+Suggested moods:
+😊
+Happy
+
+
+🥰
+Loved
+
+
+😌
+Peaceful
+
+
+😎
+Confident
+
+
+🥳
+Excited
+
+
+😐
+Neutral
+
+
+😔
+Sad
+
+
+😣
+Stressed
+
+
+😴
+Tired
+
+
+
+Additional functionality:
+- Optional explanation of the mood.
+- Mood history.
+- Weekly and monthly mood distribution.
+- Mood calendar.
+- Compare mood patterns with personal routines.
+Never assume a mood is caused by productivity or screen time. Let me interpret my own patterns.
+12. Me Time — Life outside the phone
+Core feature
+This is one of the most important sections.
+
+I don't want the website to encourage me to spend my entire life learning, working, and completing tasks.
+
+I want to have a genuinely enjoyable life.
+
+Create a dedicated Me Time section.
+
+Possible categories:
+- Going outside.
+- Meeting friends.
+- Spending time with family.
+- Exploring new places.
+- Walking.
+- Freediving.
+- Shopping.
+- Trying new hobbies.
+- Reading.
+- Watching movies.
+- Taking pictures.
+- Doing absolutely nothing.
+- Enjoying quiet moments.
+Features:
+- Offline activity journal.
+- Bucket list.
+- Places I want to visit.
+- Experiences I want to try.
+- Friends and social memories.
+- Photo gallery.
+- Personal happiness reflections.
+Add an optional offline activity timer, but don't force me to track every moment.
+
+I want Mino to occasionally remind me:
+
+"Have you done something fun today that doesn't involve your phone?"
+
+This section must have equal importance in the overall dashboard as learning and productivity.
+13. Additional features
+Implement the following features to make the system more complete.
+A. Weekly reset and reflection
+Every Sunday, generate a weekly review containing:
+- What I accomplished.
+- What I learned.
+- Projects I worked on.
+- Screen time changes.
+- Savings progress.
+- Mood patterns.
+- Offline experiences.
+- Unfinished goals.
+- Things to improve next week.
+Let Mino help me establish realistic weekly goals.
+B. Monthly life report
+At the end of each month, generate a visual personal growth report.
+
+Include achievements, completed courses, new skills, financial progress, habits, memories, and lessons learned.
+C. Goal roadmap
+Every goal should support:
+- Short-term goals.
+- Weekly goals.
+- Monthly goals.
+- Long-term goals.
+- Milestones.
+- Deadlines.
+- Progress tracking.
+- Notes and resources.
+D. Personal knowledge library
+Create a searchable library for:
+- Notes.
+- Learning resources.
+- Websites.
+- YouTube links.
+- Research.
+- Code snippets.
+- Ideas.
+- Useful AI tools.
+E. Wishlist and future plans
+Include:
+- Clothes wishlist.
+- Technology wishlist.
+- Books to buy.
+- Places to visit.
+- Skills to learn.
+- Experiences to try.
+F. Achievement system
+Add subtle achievements for consistency and milestones.
+
+Examples:
+- First 7 days of journaling.
+- First AI mini-project.
+- First completed course.
+- First month of consistent trading education.
+- Reached a savings milestone.
+- First week of reduced screen time.
+Avoid excessive notifications, competitive leaderboards, or addictive reward loops. Achievements should celebrate real progress, not create another reason to stay on the website.
+14. Website navigation and layout
+I recommend a sidebar on desktop and a bottom navigation bar on mobile.
+MINO.
+Dashboard
+
+
+Home
+
+
+Daily Buddy
+
+
+My Goals
+
+
+Calendar
+
+
+Analytics
+
+
+Journal
+
+
+Mood Tracker
+
+
+Me Time
+
+
+Savings
+
+
+Screen Time
+
+
+Tech Lab
+
+
+Library
+
+
+
+
+Desktop: persistent sidebar · Mobile: bottom navigation with access to all sections
+
+15. Design system and aesthetics
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+10
+
+
+
+
+
+
+
+
+
+
+
+The design should follow these principles:
+Element	Design direction
+Primary	Soft pastel pink
+Secondary	Butter yellow
+Background	Warm cream / off-white
+Text	Dark brown / charcoal
+Accent	Muted rose
+Cards	Rounded corners
+Buttons	Soft rounded shapes
+Typography	Clean, friendly, modern
+Illustrations	Cute, subtle, minimal
+
+Specific requirements:
+- Cozy and minimalist.
+- Feminine but sophisticated.
+- Cute without looking childish.
+- Lots of whitespace.
+- Smooth micro-animations.
+- Subtle shadows.
+- Rounded cards.
+- Beautiful charts.
+- Optional dark mode.
+- Customizable accent colors.
+Avoid overly saturated colors, clutter, unnecessary gradients, and excessive animations.
+
+Use a consistent design system across every page.
+16. Technical and functional requirements
+This section is especially important. I want an actual functioning website, not just a visual prototype.
+Platform and accessibility
+- Fully responsive on desktop, tablet, and mobile.
+- Mobile-first interface.
+- Installable Progressive Web App (PWA).
+- Support Android and iOS browsers.
+- Add-to-home-screen capability.
+- Persistent user data.
+- Fast loading and optimized assets.
+- Accessible forms and navigation.
+I want to access my journal through my phone wherever I am.
+Data and backend
+Implement:
+- Secure authentication.
+- Persistent database.
+- User-specific data isolation.
+- Automatic saving of journal entries.
+- Image upload and storage.
+- Daily, weekly, and monthly data aggregation.
+- Backup and data export.
+- Ability to edit and delete records.
+- Timezone-aware date tracking using Asia/Manila.
+Never store sensitive API keys in frontend code.
+AI integration
+Mino must use a real AI backend integration, not hardcoded responses.
+
+Implement:
+- Persistent conversation history.
+- User-approved memory.
+- Access to relevant goal and journal context.
+- Personalized daily suggestions.
+- Weekly and monthly summaries.
+- Clear privacy controls.
+- Ability to delete AI conversation history.
+The AI should only access the information necessary for its task.
+Suggested architecture
+The coding agent may choose the best suitable technology stack, but I prefer:
+- Frontend: React or Next.js.
+- Language: TypeScript.
+- Styling: Tailwind CSS.
+- Components: shadcn/ui with customized styling.
+- Backend/database: Supabase.
+- Authentication: Supabase Auth.
+- Charts: Recharts.
+- AI: Secure server-side API integration with a suitable LLM provider.
+- Hosting: Vercel or another suitable hosting provider.
+Do not sacrifice functionality for design.
+Important development requirements
+1. Build actual working forms, buttons, checklists, and navigation.
+2. Persist all important information across sessions and devices.
+3. Ensure daily tasks reset correctly without erasing history.
+4. Calculate weekly and monthly analytics from actual records.
+5. Use real database relationships rather than temporary frontend arrays.
+6. Add loading, empty, and error states.
+7. Validate all user inputs.
+8. Protect private journal entries and uploaded images.
+9. Provide a backup and export mechanism.
+10. Test the website on mobile and desktop.
+Do not use fake progress data in the production version. Sample data may be used for initial previews, but it must be clearly identified as demo data.
+
+Build the website in functional stages, and verify each feature before proceeding.
+
+17. My recommended additional features
+There are a few things I would add that could make Mino much more meaningful.
+
+
+
+
+
+
+
+
+
+
+1. A Year in My Life
+
+An automatic visual timeline of your year. Collect journal entries, photos, completed goals, places visited, and memorable moments. At the end of 2026, generate a personal yearbook.
+
+
+
+
+
+
+
+
+
+
+
+
+
+2. 100 Things to Experience
+
+A bucket list of experiences you want to have outside your phone. Mark them completed and attach photos and memories.
+
+
+
+
+
+
+
+
+
+
+
+
+
+3. Vision Board
+
+A visual collection of the person you want to become, your dream lifestyle, career, outfits, projects, and experiences.
+
+
+
+
+
+
+
+
+
+
+
+
+
+4. Letters to My Future Self
+
+Write letters to yourself and schedule them to be revealed on a chosen future date.
+
+
+
+
+
+
+
+
+
+
+
+
+
+5. Financial Independence Tracker
+
+Track savings, spending, purchases, income, and future financial goals in one place.
+
+
+
+
+
+
+
+
+
+
+
+
+
+6. Random Activity Generator
+
+When you're bored, Mino suggests something to do without scrolling. Examples: take a walk, try a new recipe, photograph something interesting, or learn something completely random.
+
+
+
+18. How I recommend building it
+Don't ask the coding AI to build everything in one giant step. It may create a beautiful interface but leave important functions unfinished.
+
+Use this implementation order:
+1. Phase 1 — Foundation
+   
+   Build the database, authentication, responsive layout, navigation, design system, and dashboard.
+2. Phase 2 — Daily Journal
+   
+   Implement daily checklist, mood tracker, journal, photo uploads, and calendar.
+3. Phase 3 — Goal Management
+   
+   Implement all seven goals, milestones, weekly and monthly targets, and progress tracking.
+4. Phase 4 — Analytics
+   
+   Build the GitHub-style activity calendar, screen time tracker, savings tracker, and productivity charts.
+5. Phase 5 — AI Buddy
+   
+   Integrate Mino, conversational memory, personalized recommendations, and weekly reflections.
+6. Phase 6 — Advanced Features
+   
+   Build Tech Lab, content library, Me Time, vision board, achievements, and yearly memories.
+7. Phase 7 — Deployment
+   
+   Test everything, optimize mobile responsiveness, enable PWA installation, configure secure storage, and deploy the actual website.
+19. Initial configuration for your November 2026 roadmap
+Here is how I would configure your first month.
+Goal	November priority	Tracking
+Finance Trading	Concepts and chart analysis, then backtesting	Daily
+Learn AI	Hermes, AI agents, experimentation	Daily
+Glow Up	Establish consistent self-care habits	Daily
+Tech Development	Explore and build mini-projects	Flexible
+Internet Money	Research and preparation	Not active
+Watch and Read	Meaningful content consumption	Flexible
+CS Advantage	Select and progress through an online course	Monthly
+
+Weekly personal commitments:
+- Save ₱1,000.
+- Review screen time.
+- Review trading and AI progress.
+- Plan the next week's priorities.
+- Make time for socializing and offline activities.
+
+20. Final instruction to the coding AI
+I would place this at the very end of your prompt. It establishes the philosophy behind the entire product.
+FINAL PRODUCT VISION
+I don't want this website to become another productivity application that makes me feel guilty whenever I don't accomplish something.
+
+I am building Mino because I want to take control of my time.
+
+I want to become knowledgeable in finance, AI, technology, and computer science. I want to become financially independent, improve my appearance, develop valuable skills, and create things that I can be proud of.
+
+But I also want to enjoy being young.
+
+I want to go outside, meet people, explore places, take pictures, discover new interests, read books, watch movies, and experience things that I wouldn't have experienced if I had spent another hour scrolling.
+
+The website must reflect this balance.
+
+Make it feel like a combination of:
+- A personal diary.
+- A life dashboard.
+- A learning management system.
+- A habit tracker.
+- A personal finance tracker.
+- A scrapbook.
+- An AI-powered personal companion.
+Prioritize functionality, privacy, reliability, and mobile accessibility.
+
+Every feature should have a purpose. Avoid unnecessary complexity and addictive design patterns.
+
+The most important principle:
+
+I am not trying to make my life revolve around this website. I am building this website to help me live a better life outside it.
+
+Make Mino something I genuinely enjoy opening every day, but never something I feel obligated to spend hours on.
+
+
+
+
+
+My final recommendations
+There are three decisions I'd strongly recommend making before the coding AI starts.
+
+1. Make it a PWA. This means you can install Mino on your phone's home screen and use it almost like a native application without needing to build separate Android and iOS apps.
+
+2. Make your data persistent from day one. Your journal, pictures, mood history, and progress should not disappear when you change devices or refresh the website.
+
+3. Keep Mino and Tech Buddy separate. Mino should handle your personal life, routines, and goals. Tech Buddy should focus on technical exploration, coding, AI, Linux, and reverse engineering. They can share relevant project progress, but their personalities and responsibilities should remain distinct.
+
+One more thing: I would make your Me Time and offline experiences just as visible as your AI and trading goals. Your goal isn't simply to become more productive. It's to have a richer life.
+
+A little progress every day, but never at the expense of living.

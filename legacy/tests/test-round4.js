@@ -1,0 +1,41 @@
+const { chromium } = require('playwright');
+const path = require('path');
+const BASE = 'http://127.0.0.1:8765/index.html';
+const OUT = __dirname;
+const today = new Date(Date.now() + 8 * 3600e3).toISOString().slice(0, 10);
+const seed = { v: 2, updated: 1700000000000, moods: { [today]: { mood: 'thinking', note: '', html: '<p>Calm</p>' } }, settings: { theme: 'system', savingsTarget: 1000, demo: false, name: 'QA' } };
+(async () => {
+  const browser = await chromium.launch();
+  const results = []; const errors = [];
+  const check = (name, ok, extra = '') => results.push({ name, ok: !!ok, extra: String(extra).slice(0, 200) });
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+  const page = await ctx.newPage();
+  page.on('pageerror', (e) => errors.push(e.message));
+  await page.goto(BASE + '#home');
+  await page.evaluate((s) => localStorage.setItem('mino.state.v2', JSON.stringify(s)), seed);
+  await page.reload(); await page.waitForSelector('#home-clock'); await page.waitForTimeout(300);
+  const order = await page.evaluate(() => { const y = (s) => document.querySelector(s).getBoundingClientRect().top + scrollY; return { mood: y('#mood-card'), checklist: y('#checklist'), chat: y('#chat'), reflection: y('details.reflection'), suggestions: y('#suggestions') }; });
+  check("Willow's suggestions sit at the bottom, below chat and reflection", order.suggestions > order.chat && order.suggestions > order.reflection && order.suggestions > order.checklist, JSON.stringify(order));
+  check('suggestions still come right after mood? (no: moved away)', order.suggestions > order.mood + 200, '');
+  const borders = await page.evaluate(() => {
+    const pick = (sel) => { const el = document.querySelector(sel); return el ? getComputedStyle(el).borderTopColor : 'missing'; };
+    return { input: pick('#view .input'), rt: pick('#mood-card .rt-wrap'), check: pick('#checklist .check'), moodSel: pick('#mood-card .mood-btn[aria-pressed="true"]') };
+  });
+  const solid = (c) => /^rgb\(\d+, \d+, \d+\)$/.test(c);
+  check('input border is translucent', borders.input !== 'missing' && !solid(borders.input), borders.input);
+  check('text box (rich text) border is translucent', borders.rt !== 'missing' && !solid(borders.rt), borders.rt);
+  check('checklist button border is translucent', borders.check !== 'missing' && !solid(borders.check), borders.check);
+  check('selected mood border is translucent', borders.moodSel !== 'missing' && !solid(borders.moodSel), borders.moodSel);
+  // no visible shift in layout: the mood buttons still sit inside their card
+  const inside = await page.evaluate(() => [...document.querySelectorAll('#mood-card .mood-btn')].every((b) => b.getBoundingClientRect().right <= b.closest('section.card').getBoundingClientRect().right + 1));
+  check('mood buttons still fit in the card', inside);
+  await page.screenshot({ path: path.join(OUT, 'round4-desktop-top.png') });
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await page.waitForTimeout(300);
+  await page.screenshot({ path: path.join(OUT, 'round4-desktop-bottom.png') });
+  check('no page errors', errors.length === 0, errors.join(' | '));
+  const passed = results.filter((c) => c.ok).length;
+  for (const c of results) console.log(`${c.ok ? 'PASS' : 'FAIL'}  ${c.name}${c.ok ? '' : '  <- ' + c.extra}`);
+  console.log(`checks passed: ${passed}/${results.length}`);
+  await browser.close();
+})().catch((e) => { console.error('TEST CRASH', e); process.exit(1); });
