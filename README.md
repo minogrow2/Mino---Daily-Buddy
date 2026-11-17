@@ -32,3 +32,5 @@ database password.
 Stack: Next.js 16 (App Router), TypeScript, Tailwind v4, Supabase Auth + Postgres + Storage.
 Sign-in is email + password for the owner only. `legacy/` holds the original single-file Willow app
 and its browser tests, used as the reference while pages are ported.
+
+Deploys to Vercel from the `main` branch.
