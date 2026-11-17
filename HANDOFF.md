@@ -27,17 +27,23 @@ Read this first. It was written on 2026-11-17 so a new chat can pick up the work
 ## Status
 
 - Done: the repo, the schema and the RLS tests.
-- Blocked: package installs. In the original chat the npm registry was refused. Package installs are controlled in **Settings → Capabilities → "Use the internet while making files"**. Check it first in a new chat with `npm view next version`. It should print a version number.
-- Not started: the Next.js app, sign-in, the pages, the data import, Finance Trading.
+- Done (2026-11-17): npm works (`npm view next version` -> 16.4.6). Next.js 16 app scaffolded at the repo root (TypeScript, Tailwind v4, App Router), Supabase clients (`src/lib/supabase/`), session proxy (`src/proxy.ts`, Next 16's name for middleware), email/password sign-in at `/login`, sign-out at `/auth/signout`, and a placeholder home that checks the database connection. Fonts (Fredoka, Outfit) are self-hosted from npm because Google Fonts is not reachable from some build sandboxes.
+- Next 16 notes: `cacheComponents` is on, so no `export const dynamic`; read cookies/Supabase inside a `<Suspense>` boundary. See `AGENTS.md` and `node_modules/next/dist/docs/`.
+- Not started: porting the Willow pages, the data import, Finance Trading.
+
+## Owner steps (not doable from code)
+
+1. Supabase dashboard -> Authentication -> Users -> **Add user** (your email + password, tick auto-confirm).
+2. Authentication -> Sign In / Providers -> turn **Allow new users to sign up** off.
+3. Vercel: import the repo, add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (see `.env.example`), deploy.
+4. Supabase -> Authentication -> URL Configuration: set Site URL to the Vercel URL.
+5. Delete the leftover `rls-test.jpg` storage record (see above).
 
 ## Next steps, in order
 
-1. Confirm npm works. Scaffold the Next.js app at the repo root: TypeScript, Tailwind CSS and the App Router.
-2. Add the Supabase client. Use the project URL `https://bytcbxiomfycsxikcpzo.supabase.co` and the publishable key, loaded from environment variables.
-3. Build sign-in.
-4. Port each Willow page. Compare it with `legacy/willow/`, then run the matching checks from `legacy/tests/` against the new app.
-5. Build a one-time import. It reads `mino.state.v2` from localStorage, uploads the IndexedDB photos to the `media` bucket, and inserts the rows. Keep the local copy until the import is checked.
-6. Build Finance Trading Parts 1–2 from the brief in the Finance Trading section below.
+1. Build the app shell (sidebar / bottom nav) and port each Willow page. Compare with `legacy/willow/`, then run the matching checks from `legacy/tests/`.
+2. Build a one-time import: read `mino.state.v2` from localStorage, upload IndexedDB photos to the `media` bucket, insert rows. Keep the local copy until verified.
+3. Finance Trading makeover (brief below / in chat): new tables via new migration files, then pages under `/goals/finance-trading/...`.
 
 ## Willow data → tables
 
