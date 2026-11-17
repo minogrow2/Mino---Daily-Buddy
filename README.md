@@ -21,3 +21,14 @@ Run the migrations in the Supabase SQL editor, or with `supabase db push` once t
 
 Only the publishable key goes in the frontend. Never commit the service-role key or the
 database password.
+
+## App (Next.js)
+
+    npm install
+    cp .env.example .env.local   # add the publishable key
+    npm run dev                  # http://localhost:3000
+    npm run build
+
+Stack: Next.js 16 (App Router), TypeScript, Tailwind v4, Supabase Auth + Postgres + Storage.
+Sign-in is email + password for the owner only. `legacy/` holds the original single-file Willow app
+and its browser tests, used as the reference while pages are ported.
