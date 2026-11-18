@@ -27,3 +27,22 @@ export function fmtDay(day: string, opts: Intl.DateTimeFormatOptions = { month: 
 export function fmtStamp(iso: string) {
   return new Intl.DateTimeFormat("en-US", { timeZone: TZ, month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" }).format(new Date(iso));
 }
+
+/** Days in the month of a YYYY-MM or YYYY-MM-DD string. */
+export function daysInMonth(day: string): number {
+  const [y, m] = day.split("-").map(Number);
+  return new Date(Date.UTC(y, m, 0)).getUTCDate();
+}
+/** The first day of a day’s month, as YYYY-MM-01. */
+export const monthStartOf = (day: string) => `${day.slice(0, 7)}-01`;
+/** Move a YYYY-MM month by whole months. */
+export function shiftMonth(month: string, n: number): string {
+  const [y, m] = month.split("-").map(Number);
+  const t = new Date(Date.UTC(y, m - 1 + n, 1));
+  return `${t.getUTCFullYear()}-${String(t.getUTCMonth() + 1).padStart(2, "0")}`;
+}
+/** "November 2026" for a day in that month. */
+export function fmtMonth(day: string): string {
+  const [y, m, d] = day.split("-").map(Number);
+  return new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(Date.UTC(y, m - 1, d)));
+}

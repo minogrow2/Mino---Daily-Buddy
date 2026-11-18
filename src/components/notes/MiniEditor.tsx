@@ -4,6 +4,8 @@ import type { ReactNode } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
+import TaskList from "@tiptap/extension-task-list";
+import TaskItem from "@tiptap/extension-task-item";
 
 /**
  * The small rich-text box for goal notes: the same toolbar as the legacy app (B, I, U, lists, quote),
@@ -14,18 +16,22 @@ export function MiniEditor({
   label,
   placeholder = "",
   readOnly = false,
+  checklist = false,
   onChange,
 }: {
   html: string;
   label: string;
   placeholder?: string;
   readOnly?: boolean;
+  /** Adds tick boxes to the toolbar (used by the quick journal). */
+  checklist?: boolean;
   onChange?: (html: string) => void;
 }) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({ heading: false, codeBlock: false, horizontalRule: false, link: { openOnClick: false, autolink: true } }),
       Placeholder.configure({ placeholder }),
+      ...(checklist ? [TaskList, TaskItem.configure({ nested: true })] : []),
     ],
     content: html,
     editable: !readOnly,
@@ -67,6 +73,7 @@ export function MiniEditor({
         {tool("Bulleted list", !!editor?.isActive("bulletList"), () => editor?.chain().focus().toggleBulletList().run(), "• List")}
         {tool("Numbered list", !!editor?.isActive("orderedList"), () => editor?.chain().focus().toggleOrderedList().run(), "1. List")}
         {tool("Quote", !!editor?.isActive("blockquote"), () => editor?.chain().focus().toggleBlockquote().run(), "“ Quote")}
+        {checklist && tool("Tick box", !!editor?.isActive("taskList"), () => editor?.chain().focus().toggleTaskList().run(), "☐ Checkbox")}
       </div>
       <EditorContent editor={editor} />
     </div>
