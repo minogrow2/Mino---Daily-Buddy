@@ -83,3 +83,12 @@ export function mapImages<T extends Node>(node: T, fn: (attrs: Record<string, un
 export const hydrate = <T extends Node>(doc: T, urls: Record<string, string>): T =>
   mapImages(doc, (a) => ({ ...a, src: urls[a.mediaId as string] ?? "" }));
 export const dehydrate = <T extends Node>(doc: T): T => mapImages(doc, (a) => ({ ...a, src: "" }));
+
+/** Removes a photo: its stored file and its row. Only call this for photos nothing else points to. */
+export async function deleteMedia(id: string): Promise<void> {
+  const sb = createClient();
+  const { data } = await sb.from("media").select("storage_path").eq("id", id).maybeSingle();
+  if (data?.storage_path) await sb.storage.from("media").remove([data.storage_path]);
+  const { error } = await sb.from("media").delete().eq("id", id);
+  if (error) throw new Error(error.message);
+}

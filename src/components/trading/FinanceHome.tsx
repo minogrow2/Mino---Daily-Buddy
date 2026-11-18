@@ -7,7 +7,7 @@ import { ErrorNote } from "@/components/ui/Modal";
 import { Heatmap } from "./Heatmap";
 import { Milestones } from "./Milestones";
 import { Resources } from "./Resources";
-import { Notes } from "./Notes";
+import { GoalNotes } from "@/components/notes/GoalNotes";
 import { NavCards } from "./NavCards";
 import { ActivityForm, ActivityLogModal } from "./ActivityLog";
 import type { Activity, DayItem, Milestone } from "@/lib/trading/types";
@@ -125,10 +125,8 @@ export function FinanceHome() {
         <NavCards />
 
         <Milestones items={ms} onChange={load} />
-        <div className="grid gap-6 lg:grid-cols-2">
-          <Notes />
-          <Resources />
-        </div>
+        <GoalNotes goal="trading" name="Finance Trading" />
+        <Resources />
       </main>
       {logOpen && <ActivityLogModal activities={acts ?? []} onClose={() => setLogOpen(false)} onChange={load} />}
       {adding && <ActivityForm activity={null} onClose={() => setAdding(false)} onSaved={() => { setAdding(false); load(); }} />}

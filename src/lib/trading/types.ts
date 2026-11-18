@@ -1,7 +1,6 @@
 export type Activity = { id: string; day: string; category: string; title: string; minutes: number; note: string };
 export type Milestone = { id: string; title: string; horizon: string; due_day: string | null; done: boolean; created_at: string };
 export type Resource = { id: string; title: string; url: string; created_at: string };
-export type Note = { id: string; html: string; pinned: boolean; created_at: string; updated_at: string };
 export type DocKind = "concept" | "backtest" | "template";
 export type TradingDoc = {
   id: string;
