@@ -34,9 +34,6 @@ export default function HomePage() {
       <Suspense fallback={<p className="text-muted">Loading…</p>}>
         <Status />
       </Suspense>
-      <form action="/auth/signout" method="post">
-        <button className="rounded-full border border-line px-4 py-2 text-sm">Sign out</button>
-      </form>
     </main>
   );
 }
