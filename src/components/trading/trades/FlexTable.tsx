@@ -24,6 +24,9 @@ type Props = {
   csvName: string;
 };
 
+type Drag = { id: string; startX: number; startW: number; w: number };
+const MIN_WIDTH = 80;
+
 export function FlexTable(p: Props) {
   const visible = p.columns.filter((c) => c.visible);
   const [q, setQ] = useState("");
@@ -33,13 +36,16 @@ export function FlexTable(p: Props) {
   const [settings, setSettings] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [drag, setDrag] = useState<Drag | null>(null);
+
+  // While a column edge is being dragged, that column shows its live width.
+  const wOf = (c: ColumnDef) => (drag?.id === c.id ? drag.w : c.width);
 
   const textCols = useMemo(() => p.columns.filter((c) => c.type === "text" || c.type === "long"), [p.columns]);
   const shown = useMemo(() => {
     const needle = q.trim().toLowerCase();
     let list = p.rows.filter((r) => !result || r.result === result);
-    if (needle)
-      list = list.filter((r) => textCols.some((c) => String(readValue(r, c) ?? "").toLowerCase().includes(needle)));
+    if (needle) list = list.filter((r) => textCols.some((c) => String(readValue(r, c) ?? "").toLowerCase().includes(needle)));
     if (sort) {
       const col = p.columns.find((c) => c.id === sort.key);
       if (col) {
@@ -58,7 +64,13 @@ export function FlexTable(p: Props) {
   }, [p.rows, p.columns, p.pctById, q, result, sort, textCols]);
 
   const allPicked = shown.length > 0 && shown.every((r) => picked.has(r.id));
-  const toggle = (id: string) => setPicked((s) => { const n = new Set(s); if (n.has(id)) n.delete(id); else n.add(id); return n; });
+  const toggle = (id: string) =>
+    setPicked((s) => {
+      const n = new Set(s);
+      if (n.has(id)) n.delete(id);
+      else n.add(id);
+      return n;
+    });
 
   async function run(fn: () => Promise<void>) {
     setBusy(true);
@@ -70,6 +82,14 @@ export function FlexTable(p: Props) {
     } finally {
       setBusy(false);
     }
+  }
+
+  // Saves the new width once the pointer is released, not on every pixel.
+  function endDrag() {
+    if (!drag) return;
+    const { id, startW, w } = drag;
+    setDrag(null);
+    if (w !== startW) run(async () => { await p.onColumnsChange(p.columns.map((c) => (c.id === id ? { ...c, width: w } : c))); });
   }
 
   function exportCsv() {
@@ -122,10 +142,26 @@ export function FlexTable(p: Props) {
               <tr className="bg-surface-2 text-left text-xs text-muted">
                 <th className="w-10 px-2 py-2"><input type="checkbox" aria-label="Select all shown rows" checked={allPicked} onChange={() => setPicked(allPicked ? new Set() : new Set(shown.map((r) => r.id)))} /></th>
                 {visible.map((c) => (
-                  <th key={c.id} className="px-2 py-2 font-medium" style={{ minWidth: c.width }}>
+                  <th key={c.id} className="relative px-2 py-2 font-medium" style={{ width: wOf(c), minWidth: wOf(c) }}>
                     <button className="flex items-center gap-1 hover:text-fg" onClick={() => setSort((s) => (s?.key === c.id ? (s.dir === 1 ? { key: c.id, dir: -1 } : null) : { key: c.id, dir: 1 }))}>
                       {c.label}{sort?.key === c.id ? (sort.dir === 1 ? " ▲" : " ▼") : ""}
                     </button>
+                    <span
+                      role="separator"
+                      aria-orientation="vertical"
+                      aria-label={`Resize ${c.label} column`}
+                      title="Drag to resize"
+                      className="absolute right-0 top-0 h-full w-2 cursor-col-resize touch-none select-none hover:bg-[var(--sage)]/30"
+                      onPointerDown={(e) => {
+                        e.currentTarget.setPointerCapture(e.pointerId);
+                        setDrag({ id: c.id, startX: e.clientX, startW: c.width, w: c.width });
+                      }}
+                      onPointerMove={(e) => {
+                        if (drag?.id === c.id) setDrag({ ...drag, w: Math.max(MIN_WIDTH, drag.startW + e.clientX - drag.startX) });
+                      }}
+                      onPointerUp={endDrag}
+                      onPointerCancel={endDrag}
+                    />
                   </th>
                 ))}
               </tr>
@@ -135,7 +171,7 @@ export function FlexTable(p: Props) {
                 <tr key={r.id} className="border-t border-line align-top hover:bg-surface-2/60">
                   <td className="px-2 py-1.5"><input type="checkbox" aria-label="Select row" checked={picked.has(r.id)} onChange={() => toggle(r.id)} /></td>
                   {visible.map((c) => (
-                    <td key={c.id} className="px-2 py-1.5" style={{ minWidth: c.width }}>
+                    <td key={c.id} className="px-2 py-1.5" style={{ width: wOf(c), minWidth: wOf(c) }}>
                       <Cell row={r} col={c} display={displayValue(r, c)} selectOptions={c.options} urls={p.urls} onPatch={(patch) => run(() => p.onPatch(r.id, patch))} onOpen={p.onOpenScreenshot} onUpload={(file) => run(async () => { const id = await uploadImage(file); await p.onPatch(r.id, { screenshot_id: id }); })} />
                     </td>
                   ))}
@@ -177,7 +213,7 @@ function Cell({
         ) : <span className="text-xs text-muted">No image</span>}
         <label className="btn btn-sm cursor-pointer">
           {url ? "Replace" : "Upload"}
-          <input type="file" accept="image/*" className="sr-only" aria-label={`Upload screenshot for row`} onChange={(e) => { const f = e.target.files?.[0]; e.target.value = ""; if (f) onUpload(f); }} />
+          <input type="file" accept="image/*" className="sr-only" aria-label="Upload screenshot for row" onChange={(e) => { const f = e.target.files?.[0]; e.target.value = ""; if (f) onUpload(f); }} />
         </label>
       </div>
     );

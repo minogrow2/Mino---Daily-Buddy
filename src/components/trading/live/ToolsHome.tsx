@@ -187,7 +187,7 @@ function DailyTracker() {
       overallLossAmount: acc.max_overall_loss, overallLossPct: acc.max_overall_loss_pct,
       drawdownType: acc.drawdown_type, includeFloating: acc.include_floating, includeFees: acc.include_fees,
       unrealized: acc.unrealized_pl, warnLow: acc.warn_low, warnHigh: acc.warn_high, today,
-      maxTradesPerDay: acc.max_trades_per_day, profitTarget: acc.profit_target,
+      maxTradesPerDay: acc.max_trades_per_day, profitTarget: acc.profit_target, dailyBasis: acc.daily_loss_basis,
     }, acc.include_fees);
   })();
 

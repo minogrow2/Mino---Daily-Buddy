@@ -248,6 +248,8 @@ export type RiskSettings = {
   today: string; // trading day, YYYY-MM-DD
   maxTradesPerDay: number | null;
   profitTarget: number | null;
+  // What the daily percentage is measured against: the fixed account size (default) or the start-of-day balance.
+  dailyBasis?: "account_size" | "balance";
 };
 
 export type RiskReport = {
@@ -289,8 +291,9 @@ export function riskReport(trades: TradeRow[], s: RiskSettings, includeFees: boo
   const todays = ordered.filter((t) => t.trade_date === s.today);
   const todayPL = sum(todays.map((t) => countedPL(t, includeFees))) + floatingCounted;
 
-  // Daily loss: how far today's P&L is below zero, measured against the start-of-day balance.
-  const dailyLimit = s.dailyLossAmount ?? (s.dailyLossPct !== null ? (s.dailyLossPct / 100) * s.accountSize : null);
+  // Daily loss: how far today's P/L is below zero. Percentages use the chosen basis.
+  const dailyBase = s.dailyBasis === "balance" ? dailyStartBalance : s.accountSize;
+  const dailyLimit = s.dailyLossAmount ?? (s.dailyLossPct !== null ? (s.dailyLossPct / 100) * dailyBase : null);
   const daily = gauge(dailyLimit, Math.max(0, -todayPL), s.warnLow, s.warnHigh);
 
   // Overall loss: static = below the starting balance; trailing = below the highest balance reached.

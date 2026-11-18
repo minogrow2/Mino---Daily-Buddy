@@ -8,6 +8,8 @@ import { uploadImage, signedUrls } from "@/lib/media";
 const FONTS = [
   { label: "Outfit", value: "Outfit Variable, sans-serif" },
   { label: "Fredoka", value: "Fredoka Variable, sans-serif" },
+  { label: "Nunito", value: "Nunito Variable, sans-serif" },
+  { label: "Montserrat", value: "Montserrat Variable, sans-serif" },
   { label: "Georgia", value: "Georgia, serif" },
   { label: "Times", value: "'Times New Roman', serif" },
   { label: "Mono", value: "'Courier New', monospace" },

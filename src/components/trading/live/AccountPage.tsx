@@ -50,6 +50,7 @@ function settingsFor(a: Account, today: string): RiskSettings {
     today,
     maxTradesPerDay: a.max_trades_per_day,
     profitTarget: a.profit_target,
+    dailyBasis: a.daily_loss_basis,
   };
 }
 

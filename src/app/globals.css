@@ -46,6 +46,8 @@
   --shadow-soft: var(--shadow);
   --font-sans: "Outfit Variable", system-ui, sans-serif;
   --font-display: "Fredoka Variable", system-ui, sans-serif;
+  --font-nunito: "Nunito Variable", system-ui, sans-serif;
+  --font-montserrat: "Montserrat Variable", system-ui, sans-serif;
 }
 
 body {

@@ -40,6 +40,12 @@ export function ColumnSettings({
       return next;
     });
 
+  // Changing a custom column's type keeps its values; dropdowns need at least one option.
+  function changeType(i: number, next: ColumnType) {
+    const current = cols[i];
+    update(i, { type: next, options: next === "select" ? (current.options?.length ? current.options : ["Option 1"]) : undefined });
+  }
+
   function addCustom() {
     const label = name.trim();
     if (!label) return setError("Give the new column a name.");
@@ -47,7 +53,7 @@ export function ColumnSettings({
     const id = `c_${label.toLowerCase().replace(/[^a-z0-9]+/g, "_").slice(0, 24)}_${Math.random().toString(36).slice(2, 6)}`;
     const opts = type === "select" ? options.split(",").map((s) => s.trim()).filter(Boolean) : undefined;
     if (type === "select" && !opts?.length) return setError("Add at least one option, separated by commas.");
-    setCols((cs) => [...cs, { id, label, type: type === "select" ? "select" : type, key: `extra.${id}`, width: type === "long" ? 300 : 160, visible: true, builtin: false, options: opts }]);
+    setCols((cs) => [...cs, { id, label, type, key: `extra.${id}`, width: type === "long" ? 300 : 160, visible: true, builtin: false, options: opts }]);
     setName("");
     setOptions("");
     setError(null);
@@ -68,7 +74,7 @@ export function ColumnSettings({
   return (
     <Modal title="Table columns" onClose={onClose} wide>
       <div className="space-y-5">
-        <p className="text-sm text-muted">Rename, hide, or reorder columns. Built-in columns can be hidden but not removed. Custom columns can be removed at any time.</p>
+        <p className="text-sm text-muted">Rename, hide, reorder, or change the type of columns. Built-in columns can be hidden but not removed. Custom columns can be removed at any time. Drag a column edge in the table to resize it.</p>
         <ul className="space-y-2">
           {cols.map((c, i) => (
             <li key={c.id} className="rounded-xl border border-line p-3" style={{ background: "var(--sage-fill)" }}>
@@ -77,7 +83,13 @@ export function ColumnSettings({
                   <input type="checkbox" checked={c.visible} onChange={(e) => update(i, { visible: e.target.checked })} className="accent-[var(--sage-deep)]" aria-label={`Show ${c.label}`} /> Show
                 </label>
                 <input className="input max-w-52" aria-label={`Name of column ${i + 1}`} value={c.label} maxLength={60} onChange={(e) => update(i, { label: e.target.value })} />
-                <span className="tag">{c.builtin ? "Built-in" : TYPES.find((t) => t.value === c.type)?.label ?? c.type}</span>
+                {c.builtin ? (
+                  <span className="tag">Built-in</span>
+                ) : (
+                  <select className="input w-auto" aria-label={`Type of ${c.label}`} value={c.type} onChange={(e) => changeType(i, e.target.value as ColumnType)}>
+                    {TYPES.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
+                  </select>
+                )}
                 <div className="ml-auto flex gap-1">
                   <button className="btn btn-sm" aria-label={`Move ${c.label} up`} disabled={i === 0} onClick={() => move(i, -1)}>↑</button>
                   <button className="btn btn-sm" aria-label={`Move ${c.label} down`} disabled={i === cols.length - 1} onClick={() => move(i, 1)}>↓</button>

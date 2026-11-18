@@ -18,7 +18,7 @@ export type ColumnDef = {
 export const SESSIONS = ["Asian", "London", "New York", "Sydney", "Custom"];
 export const DIRECTIONS = ["Buy", "Sell"];
 export const RESULTS = ["Win", "Loss", "Breakeven"];
-export const EMOTIONS = ["Confident", "Neutral", "Hesitant", "Fearful", "Greedy", "Frustrated", "Disciplined - FOMO", "Other"];
+export const EMOTIONS = ["Confident", "Neutral", "Hesitant", "Fearful", "Greedy", "Frustrated", "FOMO", "Disciplined", "Other"];
 
 const core = (id: string, label: string, type: ColumnType, key: string, width: number, extra: Partial<ColumnDef> = {}): ColumnDef => ({
   id, label, type, key, width, visible: true, builtin: true, ...extra,
@@ -69,7 +69,12 @@ export function defaultColumns(scope: "backtest" | "live"): ColumnDef[] {
 export function resolveColumns(saved: unknown, scope: "backtest" | "live"): ColumnDef[] {
   const defaults = defaultColumns(scope);
   if (!Array.isArray(saved) || saved.length === 0) return defaults;
-  const cols = saved as ColumnDef[];
+  // Built-in columns keep the user's label, order, width and visibility, but always take their type, key and options from the defaults.
+  const byId = new Map(defaults.map((d) => [d.id, d]));
+  const cols = (saved as ColumnDef[]).map((c) => {
+    const d = c.builtin ? byId.get(c.id) : undefined;
+    return d ? { ...c, type: d.type, key: d.key, options: d.options ? [...d.options] : undefined } : c;
+  });
   const have = new Set(cols.map((c) => c.id));
   return [...cols, ...defaults.filter((d) => d.builtin && !have.has(d.id))];
 }

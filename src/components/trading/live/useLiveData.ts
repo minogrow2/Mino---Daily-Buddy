@@ -15,6 +15,7 @@ export type Account = {
   max_overall_loss: number | null;
   max_overall_loss_pct: number | null;
   drawdown_type: "static" | "trailing";
+  daily_loss_basis: "account_size" | "balance";
   include_floating: boolean;
   include_fees: boolean;
   profit_target: number | null;
