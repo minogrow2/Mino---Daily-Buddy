@@ -37,34 +37,34 @@ export function Reflection({ ctx }: { ctx: HomeCtx }) {
     }
   }
 
-  const field = (key: keyof typeof EMPTY, label: string) => (
-    <div>
-      <label className="label" htmlFor={`reflect-${key}`}>{label}</label>
-      <input
-        id={`reflect-${key}`}
-        className="input"
-        maxLength={300}
-        value={lines[key]}
-        onChange={(e) => setLines({ ...lines, [key]: e.target.value })}
-      />
-    </div>
-  );
-
   return (
-    <details className="glass p-5">
-      <summary className="cursor-pointer">
-        <span className="font-display text-xl">Evening reflection</span>{" "}
-        <span className="text-sm text-muted">optional</span>
+    <details className="card reflection reveal" style={{ alignSelf: "start" }}>
+      <summary>
+        <span className="eyebrow" style={{ display: "inline" }}>
+          Evening reflection
+        </span>{" "}
+        <span className="small muted">optional</span>
       </summary>
-      <form onSubmit={save} className="mt-4 space-y-3">
-        <p className="text-sm text-muted">What did you learn, accomplish and enjoy today?</p>
-        {field("learned", "What did you learn?")}
-        {field("done", "What did you accomplish?")}
-        {field("enjoyed", "What did you enjoy?")}
+      <form onSubmit={save} className="dlg" style={{ padding: "12px 0 0", gap: 10 }}>
+        <p className="small muted">What did you learn, accomplish and enjoy today?</p>
+        <label>
+          What did you learn?
+          <input className="winput" maxLength={300} value={lines.learned} onChange={(e) => setLines({ ...lines, learned: e.target.value })} />
+        </label>
+        <label>
+          What did you accomplish?
+          <input className="winput" maxLength={300} value={lines.done} onChange={(e) => setLines({ ...lines, done: e.target.value })} />
+        </label>
+        <label>
+          What did you enjoy?
+          <input className="winput" maxLength={300} value={lines.enjoyed} onChange={(e) => setLines({ ...lines, enjoyed: e.target.value })} />
+        </label>
         <ErrorNote error={err} />
-        {saved && <p className="text-sm text-muted">Saved to your journal.</p>}
-        <div className="text-right">
-          <button className="btn btn-primary btn-sm" disabled={busy}>{busy ? "Saving…" : "Save reflection"}</button>
+        {saved && <p className="small muted">Saved to your journal.</p>}
+        <div style={{ textAlign: "right" }}>
+          <button className="wbtn primary small" disabled={busy}>
+            {busy ? "Saving…" : "Save reflection"}
+          </button>
         </div>
       </form>
     </details>

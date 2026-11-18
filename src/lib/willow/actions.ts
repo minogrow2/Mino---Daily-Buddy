@@ -26,7 +26,7 @@ export async function renameHabit(id: string, title: string) {
   fail((await createClient().from("habits").update({ title }).eq("id", id)).error);
 }
 export async function deleteHabit(id: string) {
-  fail((await createClient().from("habits").delete().eq("id", id).eq("custom", true)).error);
+  fail((await createClient().from("habits").delete().eq("id", id)).error);
 }
 export async function swapOrder(a: { id: string; sort_order: number }, b: { id: string; sort_order: number }) {
   const sb = createClient();

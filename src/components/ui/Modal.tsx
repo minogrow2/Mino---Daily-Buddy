@@ -2,51 +2,55 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
+/** A native dialog with the legacy frosted look: Escape and a tap outside close it. */
 export function Modal({
   title,
+  eyebrow,
   onClose,
   children,
   wide,
 }: {
   title: string;
+  eyebrow?: string;
   onClose: () => void;
   children: ReactNode;
   wide?: boolean;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDialogElement>(null);
   useEffect(() => {
-    const prev = document.activeElement as HTMLElement | null;
-    ref.current?.focus();
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", onKey);
+    const d = ref.current;
+    if (d && !d.open) d.showModal();
     return () => {
-      window.removeEventListener("keydown", onKey);
-      prev?.focus?.();
+      if (d?.open) d.close();
     };
-  }, [onClose]);
+  }, []);
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-0 sm:items-center sm:p-4"
-      onMouseDown={(e) => e.target === e.currentTarget && onClose()}
+    <dialog
+      ref={ref}
+      className="form-dialog"
+      aria-label={title}
+      style={wide ? { width: "min(560px, calc(100vw - 32px))", maxHeight: "88vh", overflow: "auto" } : undefined}
+      onCancel={(e) => {
+        e.preventDefault();
+        onClose();
+      }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
     >
-      <div
-        ref={ref}
-        tabIndex={-1}
-        role="dialog"
-        aria-modal="true"
-        aria-label={title}
-        className={`glass flex max-h-[92vh] w-full flex-col outline-none ${wide ? "sm:max-w-3xl" : "sm:max-w-lg"}`}
-        style={{ background: "var(--surface)" }}
-      >
-        <div className="flex items-center justify-between gap-3 border-b border-line px-5 py-3">
-          <h2 className="font-display text-xl">{title}</h2>
-          <button className="btn btn-sm" onClick={onClose} aria-label="Close">
-            ✕
+      <div className="dlg">
+        <div className="card-head" style={{ marginBottom: 4 }}>
+          <div>
+            {eyebrow && <div className="eyebrow">{eyebrow}</div>}
+            <h2 style={{ marginTop: eyebrow ? 4 : 0 }}>{title}</h2>
+          </div>
+          <button type="button" className="wbtn ghost small" onClick={onClose}>
+            Close
           </button>
         </div>
-        <div className="overflow-y-auto p-5">{children}</div>
+        {children}
       </div>
-    </div>
+    </dialog>
   );
 }
 
@@ -60,12 +64,14 @@ export function useConfirm() {
   };
   const dialog = state && (
     <Modal title="Are you sure?" onClose={() => done(false)}>
-      <p className="mb-5 text-sm">{state.msg}</p>
-      <div className="flex justify-end gap-2">
-        <button className="btn" onClick={() => done(false)}>
+      <p>{state.msg}</p>
+      <div className="actions">
+        <button type="button" className="wbtn ghost small" onClick={() => done(false)}>
           Cancel
         </button>
-        <button className={state.label === "Delete" ? "btn btn-danger" : "btn btn-primary"} onClick={() => done(true)}>{state.label}</button>
+        <button type="button" className={/Delete|Remove/.test(state.label) ? "wbtn danger small" : "wbtn primary small"} onClick={() => done(true)}>
+          {state.label}
+        </button>
       </div>
     </Modal>
   );
@@ -74,7 +80,7 @@ export function useConfirm() {
 
 export function ErrorNote({ error }: { error: string | null }) {
   return error ? (
-    <p role="alert" className="rounded-xl border border-rose/40 bg-pink-soft px-3 py-2 text-sm text-rose">
+    <p role="alert" className="err">
       {error}
     </p>
   ) : null;

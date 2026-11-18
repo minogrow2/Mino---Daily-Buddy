@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRef, useState } from "react";
 import { MiniEditor } from "@/components/notes/MiniEditor";
 import { Card } from "@/components/ui/Card";
@@ -40,7 +41,7 @@ export function QuickJournal({ ctx, onSaved }: { ctx: HomeCtx; onSaved: () => vo
   }
 
   return (
-    <Card eyebrow="Today" title="Quick journal" id="quick-journal">
+    <Card id="quick-journal" eyebrow="Today" title="Quick journal">
       <ErrorNote error={err} />
       <MiniEditor
         key={round}
@@ -53,9 +54,12 @@ export function QuickJournal({ ctx, onSaved }: { ctx: HomeCtx; onSaved: () => vo
           setSaved(false);
         }}
       />
-      <div className="mt-3 flex items-center justify-end gap-3">
-        {saved && <span className="text-sm text-muted">Saved to your journal.</span>}
-        <button type="button" className="btn btn-primary btn-sm" onClick={save} disabled={busy}>
+      <div className="row-inline" style={{ justifyContent: "flex-end", marginTop: 10 }}>
+        {saved && <span className="small muted">Saved to your journal.</span>}
+        <Link className="wbtn ghost small" href="/journal">
+          Open journal
+        </Link>
+        <button type="button" className="wbtn primary small" onClick={save} disabled={busy}>
           {busy ? "Saving…" : "Save entry"}
         </button>
       </div>

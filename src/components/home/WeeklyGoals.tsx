@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import { useState } from "react";
 import { Card } from "@/components/ui/Card";
 import { ErrorNote } from "@/components/ui/Modal";
@@ -14,7 +15,7 @@ import type { HomeCtx } from "./context";
 const DOW = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const errorText = (e: unknown) => (e instanceof Error ? e.message : "Something went wrong. Try again.");
 
-/** This week, Monday to Sunday: a tick per goal per day, and the life balance under it. */
+/** This week, Monday to Sunday: a circle per goal per day, and the life balance beside it. */
 export function WeeklyGoals({ ctx }: { ctx: HomeCtx }) {
   const { data, edit, reload } = ctx;
   const today = data.today;
@@ -63,67 +64,79 @@ export function WeeklyGoals({ ctx }: { ctx: HomeCtx }) {
   ];
 
   return (
-    <>
-      <Card eyebrow={`This week · ${range}`} title="Goal progress">
-        <p className="-mt-2 mb-4 text-sm text-muted">Tap a day to log that goal. A filled circle means something was logged for it that day.</p>
-        <ErrorNote error={err} />
-        <ul className="space-y-4">
-          {GOALS.map((g) => {
-            const n = days.filter((d) => loggedOn(g.id, d)).length;
-            return (
-              <li key={g.id} className="space-y-2">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <Link href={g.id === "trading" ? "/goals/finance-trading" : "/goals"} className="flex items-center gap-2 font-medium hover:underline">
-                    <span className="inline-block h-3 w-3 rounded-full" style={{ background: GOAL_TINT[g.id] }} aria-hidden />
-                    {g.name}
-                  </Link>
-                  <span className="text-sm text-muted">{n}/7 this week</span>
-                </div>
-                <div className="grid grid-cols-7 gap-1 sm:gap-2" role="group" aria-label={`${g.name}, this week`}>
-                  {days.map((d, i) => {
-                    const on = loggedOn(g.id, d);
-                    const isToday = d === today;
-                    const label = fmtDay(d, { weekday: "long", month: "short", day: "numeric" });
-                    return (
-                      <button
-                        key={d}
-                        type="button"
-                        aria-pressed={on}
-                        aria-label={`${label}: ${on ? "logged" : "not logged"}`}
-                        disabled={d > today}
-                        onClick={() => toggle(g.id, d)}
-                        className={`flex flex-col items-center gap-1 rounded-xl py-1 text-xs disabled:opacity-40 ${isToday ? "ring-2 ring-[var(--rose)]" : ""}`}
-                      >
-                        <span className="text-muted" aria-hidden>{DOW[i]}</span>
-                        <span
-                          aria-hidden
-                          className="grid h-8 w-8 place-items-center rounded-full border-2 text-sm"
-                          style={{ borderColor: GOAL_TINT[g.id], background: on ? GOAL_TINT[g.id] : "transparent" }}
+    <div className="grid two">
+      <div style={{ gridColumn: "1 / -1" }}>
+        <Card
+          id="goal-week"
+          eyebrow={`This week · ${range}`}
+          title="Goal progress"
+          right={
+            <Link className="small" href="/goals">
+              All goals
+            </Link>
+          }
+        >
+          <p className="small muted" style={{ marginTop: -4 }}>
+            Tap a day to log that goal. A filled circle means something was logged for it that day.
+          </p>
+          <ErrorNote error={err} />
+          <div className="wk-list">
+            {GOALS.map((g) => {
+              const n = days.filter((d) => loggedOn(g.id, d)).length;
+              return (
+                <div key={g.id} className="wk-goal" style={{ "--tint": GOAL_TINT[g.id] } as CSSProperties}>
+                  <div className="wk-head">
+                    <Link className="wk-name" href={g.id === "trading" ? "/goals/finance-trading" : "/goals"}>
+                      <span className="wk-tint" aria-hidden="true" />
+                      {g.name}
+                    </Link>
+                    <span className="small muted">{n}/7 this week</span>
+                  </div>
+                  <div className="wk-days" role="group" aria-label={`${g.name}, this week`}>
+                    {days.map((d, i) => {
+                      const on = loggedOn(g.id, d);
+                      const label = fmtDay(d, { weekday: "long", month: "short", day: "numeric" });
+                      return (
+                        <button
+                          key={d}
+                          type="button"
+                          className={`wk-day${on ? " on" : ""}${d === today ? " today" : ""}`}
+                          aria-pressed={on}
+                          aria-label={`${label}: ${on ? "logged" : "not logged"}`}
+                          disabled={d > today}
+                          onClick={() => toggle(g.id, d)}
                         >
-                          {on ? "♥" : ""}
-                        </span>
-                      </button>
-                    );
-                  })}
+                          <span className="wk-dow" aria-hidden="true">
+                            {DOW[i]}
+                          </span>
+                          <span className="wk-circle" aria-hidden="true">
+                            {on ? "♥" : ""}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
-              </li>
-            );
-          })}
-        </ul>
-      </Card>
+              );
+            })}
+          </div>
+        </Card>
+      </div>
 
       <Card eyebrow="This week" title="Life balance">
-        <div className="grid grid-cols-3 gap-3">
+        <div className="stats" style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
           {balance.map((b) => (
-            <div key={b.label} className="rounded-xl border border-line p-3" style={{ background: "var(--sage-fill)" }}>
-              <p className="text-xs text-muted">{b.label}</p>
-              <p className="font-display text-3xl leading-tight">{b.v.count}</p>
-              <p className="text-xs text-muted">{hm(b.v.minutes)}</p>
+            <div key={b.label} className="stat">
+              <div className="small muted">{b.label}</div>
+              <div className="v">{b.v.count}</div>
+              <div className="small muted">{hm(b.v.minutes)}</div>
             </div>
           ))}
         </div>
-        <p className="mt-3 text-sm text-muted">Last 7 days, Monday to today. All three matter equally.</p>
+        <p className="small muted" style={{ marginTop: 10 }}>
+          Last 7 days, Monday to today. All three matter equally.
+        </p>
       </Card>
-    </>
+    </div>
   );
 }

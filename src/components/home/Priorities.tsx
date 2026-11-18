@@ -77,48 +77,48 @@ export function Priorities({ ctx }: { ctx: HomeCtx }) {
   }
 
   return (
-    <Card title="Today’s priorities" eyebrow={`${priorities.length} of ${MAX_PRIORITIES} priorities`}>
+    <Card id="priorities" title="Today’s priorities" eyebrow={`${priorities.length} of ${MAX_PRIORITIES} priorities`}>
       <ErrorNote error={err} />
       {priorities.length ? (
-        <ol className="mb-4 list-decimal space-y-1 pl-5">
+        <ol className="list" style={{ paddingLeft: 18 }}>
           {priorities.map((t) => (
-            <li key={t.id} className={t.done ? "text-muted line-through" : ""}>{t.title}</li>
+            <li key={t.id} className={t.done ? "done" : ""} style={{ padding: "4px 0" }}>
+              {t.title}
+            </li>
           ))}
         </ol>
       ) : (
-        <p className="mb-4 text-sm text-muted">Star up to three tasks below to make them today’s priorities.</p>
+        <p className="muted small">Star up to three tasks below to make them today’s priorities.</p>
       )}
+      <div style={{ height: 14 }} />
 
-      <ul className="divide-y divide-[var(--line)]">
+      <ul className="list">
         {tasks.map((t, i) => (
-          <li key={t.id} className="flex items-center gap-2 py-2">
-            <button
-              type="button"
-              role="checkbox"
-              aria-checked={t.done}
-              aria-label={t.title}
-              onClick={() => toggleDone(t)}
-              className={`grid h-7 w-7 shrink-0 place-items-center rounded-lg border-2 text-sm ${
-                t.done ? "border-[var(--sage-deep)] bg-[var(--sage-deep)] text-white" : "border-[rgba(63,107,80,0.45)] bg-[rgba(110,156,126,0.12)]"
-              }`}
-            >
+          <li key={t.id} className={`item${t.done ? " done" : ""}`}>
+            <button type="button" className="check" role="checkbox" aria-checked={t.done} aria-label={t.title} onClick={() => toggleDone(t)}>
               {t.done ? "✓" : ""}
             </button>
-            <span className={`min-w-0 flex-1 ${t.done ? "text-muted line-through" : ""}`}>{t.title}</span>
-            <button type="button" className="btn btn-sm" aria-pressed={t.priority} aria-label="Priority" onClick={() => togglePriority(t)}>
+            <span className="grow">{t.title}</span>
+            <button type="button" className="wbtn ghost small" aria-pressed={t.priority} aria-label="Priority" onClick={() => togglePriority(t)}>
               {t.priority ? "★" : "☆"}
             </button>
-            <button type="button" className="btn btn-sm" onClick={() => move(i, -1)} disabled={i === 0} aria-label="Move up">↑</button>
-            <button type="button" className="btn btn-sm" onClick={() => setEditing(t)}>Edit</button>
-            <button type="button" className="btn btn-sm btn-danger" onClick={() => remove(t)}>Delete</button>
+            <button type="button" className="wbtn ghost small" onClick={() => move(i, -1)} disabled={i === 0} aria-label="Move up">
+              ↑
+            </button>
+            <button type="button" className="wbtn ghost small" onClick={() => setEditing(t)}>
+              Edit
+            </button>
+            <button type="button" className="wbtn danger small" onClick={() => remove(t)}>
+              Delete
+            </button>
           </li>
         ))}
-        {!tasks.length && <li className="py-3 text-sm text-muted">No tasks yet today. Add one below.</li>}
+        {!tasks.length && <li className="empty">No tasks yet today. Add one below.</li>}
       </ul>
 
-      <form onSubmit={add} className="mt-4 flex gap-2">
-        <input className="input" value={title} maxLength={140} placeholder="Add a task for today" aria-label="New task" onChange={(e) => setTitle(e.target.value)} />
-        <button className="btn btn-primary btn-sm shrink-0">Add</button>
+      <form onSubmit={add} className="row-inline" style={{ marginTop: 12 }}>
+        <input className="winput" value={title} maxLength={140} placeholder="Add a task for today" aria-label="New task" onChange={(e) => setTitle(e.target.value)} />
+        <button className="wbtn primary small">Add</button>
       </form>
 
       {editing && (

@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { MiniEditor } from "@/components/notes/MiniEditor";
-import { ErrorNote, useConfirm } from "@/components/ui/Modal";
 import { Card } from "@/components/ui/Card";
+import { ErrorNote, useConfirm } from "@/components/ui/Modal";
 import { Icon } from "@/components/ui/Icon";
 import { usePhotoUrls } from "@/lib/usePhotoUrls";
 import { CATS, ME_TIME, MOODS, MOOD_NOTES } from "@/lib/willow/constants";
@@ -22,6 +22,7 @@ const withDay = (list: DayMood[], day: string, patch: Partial<DayMood>): DayMood
 
 const errorText = (e: unknown) => (e instanceof Error ? e.message : "Something went wrong. Try again.");
 
+/** How are you feeling today: a mood, what is behind it, photos, and the Me Time ticks. */
 export function MoodCard({ ctx }: { ctx: HomeCtx }) {
   const { data, edit, reload } = ctx;
   const today = data.today;
@@ -78,7 +79,7 @@ export function MoodCard({ ctx }: { ctx: HomeCtx }) {
   };
 
   const removePhoto = async (mediaId: string) => {
-    if (!(await ask("Remove this photo from this day? It is deleted from your account."))) return;
+    if (!(await ask("Remove this photo from this day? It is deleted from your account.", "Remove"))) return;
     edit((d) => ({ ...d, moodPhotos: d.moodPhotos.filter((p) => p.media_id !== mediaId) }));
     removeMoodPhoto(today, mediaId).catch((e) => {
       setErr(errorText(e));
@@ -116,30 +117,19 @@ export function MoodCard({ ctx }: { ctx: HomeCtx }) {
   return (
     <Card id="mood-card" eyebrow="Today" title="How are you feeling?">
       <ErrorNote error={err} />
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5" role="group" aria-label="Choose a mood">
-        {MOODS.map((m) => {
-          const on = mood === m.key;
-          return (
-            <button
-              key={m.key}
-              type="button"
-              aria-pressed={on}
-              onClick={() => pick(m.key)}
-              className={`flex min-h-11 items-center gap-2 rounded-2xl border px-3 py-2 text-left text-sm transition ${
-                on
-                  ? "border-2 border-dashed border-[var(--sage-deep)] bg-[rgba(110,156,126,0.2)] font-semibold"
-                  : "border-[rgba(63,107,80,0.35)] bg-[rgba(110,156,126,0.12)] hover:bg-[rgba(110,156,126,0.2)]"
-              }`}
-            >
-              <Icon body={m.icon} className="h-5 w-5 shrink-0" />
-              <span>{m.label}</span>
-            </button>
-          );
-        })}
+      <div className="moods" role="group" aria-label="Choose a mood">
+        {MOODS.map((m) => (
+          <button key={m.key} type="button" className="mood-btn" aria-pressed={mood === m.key} onClick={() => pick(m.key)}>
+            <span className="e">
+              <Icon body={m.icon} className="mi" />
+            </span>
+            <span>{m.label}</span>
+          </button>
+        ))}
       </div>
-      {note && <p className="mt-3 text-sm">{note}</p>}
+      {note && <p className="small" style={{ marginTop: 10 }}>{note}</p>}
 
-      <div className="mt-4">
+      <div style={{ marginTop: 14 }}>
         <MiniEditor
           key={today}
           html={row?.html ?? ""}
@@ -149,8 +139,8 @@ export function MoodCard({ ctx }: { ctx: HomeCtx }) {
         />
       </div>
 
-      <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-        <label className="btn btn-sm cursor-pointer">
+      <div className="row-inline" style={{ marginTop: 12, justifyContent: "space-between" }}>
+        <label className="wbtn soft small photo-add">
           + Add photo
           <input
             className="sr-only"
@@ -165,7 +155,7 @@ export function MoodCard({ ctx }: { ctx: HomeCtx }) {
             }}
           />
         </label>
-        <span className="text-xs text-muted">Photos are saved to your account.</span>
+        <span className="small muted">Photos are saved to your account.</span>
       </div>
       {photos.length > 0 && (
         <div className="photo-grid">
@@ -176,40 +166,40 @@ export function MoodCard({ ctx }: { ctx: HomeCtx }) {
                 <img src={urls[p.media_id]} alt="Photo from this day" loading="lazy" />
               )}
               <figcaption>
-                <button type="button" className="btn btn-sm" onClick={() => removePhoto(p.media_id)}>Remove photo</button>
+                <button type="button" className="wbtn ghost small" onClick={() => removePhoto(p.media_id)}>
+                  Remove photo
+                </button>
               </figcaption>
             </figure>
           ))}
         </div>
       )}
 
-      <div className="mt-5 border-t border-dashed border-[rgba(63,107,80,0.35)] pt-4">
-        <div className="flex items-center justify-between">
-          <p className="text-xs uppercase tracking-wide text-muted">Me time</p>
-          <p className="text-sm text-muted">{tickedCount} of {ME_TIME.length}</p>
+      <div className="me-time">
+        <div className="row-inline" style={{ justifyContent: "space-between" }}>
+          <p className="eyebrow">Me time</p>
+          <p className="small muted">
+            {tickedCount} of {ME_TIME.length}
+          </p>
         </div>
-        <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3" role="group" aria-label="Me time for today">
+        <div className="me-grid" role="group" aria-label="Me time for today">
           {ME_TIME.map((m) => {
             const on = ticked(m.key);
             return (
-              <button
-                key={m.key}
-                type="button"
-                aria-pressed={on}
-                onClick={() => toggleMe(m.key)}
-                className={`flex min-h-11 items-center gap-2 rounded-2xl border px-3 py-2 text-left text-sm ${
-                  on ? "border-[var(--sage-deep)] bg-[rgba(110,156,126,0.22)] font-semibold" : "border-[rgba(63,107,80,0.3)] bg-[rgba(110,156,126,0.08)]"
-                }`}
-              >
-                <Icon body={m.icon} className="h-5 w-5 shrink-0 text-[var(--rose)]" />
-                <span className="min-w-0 flex-1">{m.label}</span>
-                <span aria-hidden className={on ? "font-bold text-[var(--rose)]" : "opacity-0"}>✓</span>
+              <button key={m.key} type="button" aria-pressed={on} className={`me-chip${on ? " on" : ""}`} onClick={() => toggleMe(m.key)}>
+                <span className="me-ico">
+                  <Icon body={m.icon} className="mi" />
+                </span>
+                <span>{m.label}</span>
+                <span className="me-tick" aria-hidden>
+                  ✓
+                </span>
               </button>
             );
           })}
         </div>
       </div>
-      <p className="mt-4 text-xs text-muted">
+      <p className="small muted" style={{ marginTop: 10 }}>
         Never assumed. Nothing here decides what your mood means. You interpret your own patterns.
       </p>
       {dialog}

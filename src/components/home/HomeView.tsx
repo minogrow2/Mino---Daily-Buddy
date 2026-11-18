@@ -18,7 +18,7 @@ import { Suggestions } from "./Suggestions";
 import { WeeklyGoals } from "./WeeklyGoals";
 import { WillowChat } from "./WillowChat";
 
-/** The Home page: one dashboard from the greeting down to Willow’s suggestions. */
+/** The Home page, top to bottom, in the same order as the legacy app. */
 export function HomeView() {
   // The month shown; null means the current month. Time is read only in the browser, never while the page is prerendered.
   const [month, setMonth] = useState<string | null>(null);
@@ -46,36 +46,36 @@ export function HomeView() {
 
   if (!data) {
     return (
-      <main className="mx-auto max-w-5xl p-8">
+      <div className="home-wrap" style={{ padding: "16px 0" }}>
         <ErrorNote error={error} />
-        {!error && <p className="text-muted">Loading your day…</p>}
-      </main>
+        {!error && <div className="empty">Opening Willow…</div>}
+      </div>
     );
   }
 
   const ctx: HomeCtx = { data, edit, reload: load };
   const shown = month ?? data.today.slice(0, 7);
   return (
-    <main className="mx-auto max-w-5xl space-y-6 p-4 sm:p-8">
+    <div className="grid home">
       <Hero today={data.today} name={data.name} />
       <MoodCard ctx={ctx} />
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid two">
         <Checklist ctx={ctx} />
         <Priorities ctx={ctx} />
       </div>
       <Heatmap today={data.today} version={version} />
       <WeeklyGoals ctx={ctx} />
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid two">
         <MonthPreview ctx={ctx} month={shown} setMonth={setMonth} />
         <QuickJournal ctx={ctx} onSaved={() => setVersion((v) => v + 1)} />
       </div>
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid two">
         <WillowChat ctx={ctx} />
-        <div className="space-y-6">
+        <div className="grid">
           <Reflection ctx={ctx} />
         </div>
       </div>
       <Suggestions ctx={ctx} />
-    </main>
+    </div>
   );
 }

@@ -68,46 +68,40 @@ export function WillowChat({ ctx }: { ctx: HomeCtx }) {
   }
 
   return (
-    <Card eyebrow="Conversation" title="Chat with Willow" id="chat">
+    <Card id="chat" eyebrow="Conversation" title="Chat with Willow">
       <ErrorNote error={err} />
-      <div className="max-h-[340px] space-y-2 overflow-auto pr-1" aria-live="polite">
-        {data.chat.length === 0 && !busy && (
-          <p className="text-sm text-muted">Say hello. Willow can help you plan, reflect, or find something to do outside.</p>
-        )}
+      <div className="chat" aria-live="polite" style={{ maxHeight: 340, overflow: "auto", paddingRight: 4, marginTop: 10 }}>
+        {data.chat.length === 0 && !busy && <p className="muted small">Say hello. Willow can help you plan, reflect, or find something to do outside.</p>}
         {data.chat.map((c) =>
           c.role === "note" ? (
-            <p key={c.id} className="text-xs italic text-muted">{c.body}</p>
+            <p key={c.id} className="chat-note">
+              {c.body}
+            </p>
           ) : (
-            <div
-              key={c.id}
-              className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm ${
-                c.role === "me" ? "ml-auto bg-[var(--pink)]" : "bg-[rgba(110,156,126,0.16)]"
-              }`}
-            >
+            <div key={c.id} className={`bubble ${c.role === "me" ? "me" : "mino"}`}>
               {c.body}
             </div>
           ),
         )}
-        {busy && <div className="max-w-[85%] rounded-2xl bg-[rgba(110,156,126,0.16)] px-3 py-2 text-sm">Thinking…</div>}
+        {busy && <div className="bubble mino">Thinking…</div>}
       </div>
-      <form onSubmit={send} className="mt-3 flex gap-2">
-        <input
-          className="input"
-          value={text}
-          maxLength={800}
-          placeholder="Talk to Willow…"
-          aria-label="Message Willow"
-          onChange={(e) => setText(e.target.value)}
-        />
-        <button className="btn btn-primary btn-sm shrink-0" disabled={busy}>Send</button>
+      <form onSubmit={send} className="row-inline" style={{ marginTop: 12 }}>
+        <input className="winput" value={text} maxLength={800} placeholder="Talk to Willow…" aria-label="Message Willow" onChange={(e) => setText(e.target.value)} />
+        <button className="wbtn primary small" disabled={busy}>
+          Send
+        </button>
       </form>
-      <label className="mt-3 flex items-center gap-2 text-sm">
-        <input type="checkbox" className="accent-[var(--sage-deep)]" checked={data.chatJournal} onChange={(e) => toggleJournal(e.target.checked)} />
+      <label className="check-row small" style={{ marginTop: 10 }}>
+        <input type="checkbox" checked={data.chatJournal} onChange={(e) => toggleJournal(e.target.checked)} />
         Let Willow read my last five journal entries. Off by default.
       </label>
-      <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
-        <span className="text-xs text-muted">Willow sees goals, today’s checklist, tasks and mood. Journal text only if you turn it on above.</span>
-        {data.chat.length > 0 && <button type="button" className="btn btn-sm btn-danger" onClick={clear}>Delete conversation</button>}
+      <div className="row-inline" style={{ justifyContent: "space-between", marginTop: 8 }}>
+        <span className="small muted">Willow sees goals, today’s checklist, tasks and mood. Journal text only if you turn it on above.</span>
+        {data.chat.length > 0 && (
+          <button type="button" className="wbtn danger small" onClick={clear}>
+            Delete conversation
+          </button>
+        )}
       </div>
       {dialog}
     </Card>

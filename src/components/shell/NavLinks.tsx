@@ -28,9 +28,10 @@ const ICONS = {
   ),
 };
 
+/** The sections that exist so far. More are added as the port reaches them. */
 export const NAV: { href: string; label: string; icon: keyof typeof ICONS }[] = [
   { href: "/", label: "Home", icon: "home" },
-  { href: "/goals", label: "My Goals", icon: "goals" },
+  { href: "/goals", label: "Goals", icon: "goals" },
 ];
 
 /** `path` is null while the URL is unknown (prerender); links still render, just without the active highlight. */
@@ -39,17 +40,8 @@ export function NavList({ variant, path }: { variant: "side" | "bottom"; path: s
   return (
     <>
       {NAV.map((n) => (
-        <Link
-          key={n.href}
-          href={n.href}
-          aria-current={active(n.href) ? "page" : undefined}
-          className={
-            variant === "side"
-              ? `flex items-center gap-2 rounded-xl px-3 py-2 text-sm transition ${active(n.href) ? "bg-pink text-fg font-medium" : "text-muted hover:bg-surface-2"}`
-              : `flex flex-1 flex-col items-center gap-0.5 py-2 text-xs ${active(n.href) ? "text-rose font-medium" : "text-muted"}`
-          }
-        >
-          <span className="inline-flex">{ICONS[n.icon]}</span>
+        <Link key={n.href} href={n.href} aria-current={active(n.href) ? "page" : undefined} className={variant === "side" ? "side-link" : "nav-btn"}>
+          <span className={variant === "side" ? "inline-flex" : "ico"}>{ICONS[n.icon]}</span>
           {n.label}
         </Link>
       ))}

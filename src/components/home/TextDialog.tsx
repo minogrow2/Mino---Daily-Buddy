@@ -43,15 +43,19 @@ export function TextDialog({
 
   return (
     <Modal title={title} onClose={onClose}>
-      <form onSubmit={go} className="space-y-4">
-        <div>
-          <label className="label" htmlFor="text-dialog-field">{label}</label>
-          <input id="text-dialog-field" className="input" value={value} maxLength={max} autoFocus onChange={(e) => setValue(e.target.value)} />
-        </div>
+      <form onSubmit={go} className="dlg" style={{ padding: 0 }}>
+        <label>
+          {label}
+          <input className="winput" value={value} maxLength={max} autoFocus onChange={(e) => setValue(e.target.value)} />
+        </label>
         <ErrorNote error={error} />
-        <div className="flex justify-end gap-2">
-          <button type="button" className="btn" onClick={onClose}>Cancel</button>
-          <button className="btn btn-primary" disabled={busy}>{busy ? "Saving…" : submit}</button>
+        <div className="actions">
+          <button type="button" className="wbtn ghost small" onClick={onClose}>
+            Cancel
+          </button>
+          <button className="wbtn primary small" disabled={busy}>
+            {busy ? "Saving…" : submit}
+          </button>
         </div>
       </form>
     </Modal>

@@ -6,13 +6,20 @@ import type { HomeCtx } from "./context";
 export function Suggestions({ ctx }: { ctx: HomeCtx }) {
   const tips = minoTips(ctx.data);
   return (
-    <Card eyebrow="For today" title="Willow’s suggestions" id="suggestions">
-      <ul className="divide-y divide-[var(--line)]">
+    <Card id="suggestions" eyebrow="For today" title="Willow’s suggestions">
+      <ul className="list" style={{ listStyle: "none", padding: 0, margin: 0 }}>
         {tips.map((tip) => (
-          <li key={tip} className="py-2 text-sm">{tip}</li>
+          <li key={tip} style={{ padding: "8px 0", borderBottom: "1px solid var(--line)" }}>
+            {tip}
+          </li>
         ))}
+        {tips.length === 0 && (
+          <li className="muted small" style={{ padding: "8px 0" }}>
+            Nothing to suggest right now.
+          </li>
+        )}
       </ul>
-      <p className="mt-3 text-xs text-muted">
+      <p className="small muted" style={{ marginTop: 8 }}>
         Based on your checklist, tasks, mood and recent activity. Suggestions only; nothing is judged.
       </p>
     </Card>

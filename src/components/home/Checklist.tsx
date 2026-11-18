@@ -11,7 +11,7 @@ import { TextDialog } from "./TextDialog";
 
 const errorText = (e: unknown) => (e instanceof Error ? e.message : "Something went wrong. Try again.");
 
-/** Today’s daily habits: tick them off, reorder them, and add or edit your own. */
+/** Today’s daily habits: tick them off, reorder them, add, rename or remove them. */
 export function Checklist({ ctx }: { ctx: HomeCtx }) {
   const { data, edit, reload } = ctx;
   const habits = coreHabits(data.habits);
@@ -51,49 +51,49 @@ export function Checklist({ ctx }: { ctx: HomeCtx }) {
   }
 
   async function remove(h: Habit) {
-    if (!(await ask("Delete this custom habit? Past check marks stay in your history."))) return;
+    if (!(await ask("Remove this habit from your checklist? Its past check marks stay in your history.", "Remove"))) return;
     edit((d) => ({ ...d, habits: d.habits.filter((x) => x.id !== h.id) }));
     deleteHabit(h.id).catch(fail);
   }
 
   return (
-    <Card
-      title="Daily checklist"
-      eyebrow={`${done} of ${habits.length} done`}
-      right={<button type="button" className="btn btn-sage btn-sm" onClick={() => setAdding(true)}>+ Add habit</button>}
-    >
+    <Card id="checklist" title="Daily checklist" eyebrow={`${done} of ${habits.length} done`}>
       <ErrorNote error={err} />
-      <ul className="divide-y divide-[var(--line)]">
+      <ul className="list">
         {habits.map((h, i) => {
           const on = checked.has(h.id);
           return (
-            <li key={h.id} className="flex items-center gap-2 py-2">
-              <button
-                type="button"
-                role="checkbox"
-                aria-checked={on}
-                aria-label={h.title}
-                onClick={() => toggle(h)}
-                className={`grid h-7 w-7 shrink-0 place-items-center rounded-lg border-2 text-sm ${
-                  on ? "border-[var(--sage-deep)] bg-[var(--sage-deep)] text-white" : "border-[rgba(63,107,80,0.45)] bg-[rgba(110,156,126,0.12)]"
-                }`}
-              >
+            <li key={h.id} className={`item${on ? " done" : ""}`}>
+              <button type="button" className="check" role="checkbox" aria-checked={on} aria-label={h.title} onClick={() => toggle(h)}>
                 {on ? "✓" : ""}
               </button>
-              <span className={`min-w-0 flex-1 ${on ? "text-muted line-through" : ""}`}>{h.title}</span>
-              <button type="button" className="btn btn-sm" onClick={() => move(i, -1)} disabled={i === 0} aria-label="Move up">↑</button>
-              <button type="button" className="btn btn-sm" onClick={() => move(i, 1)} disabled={i === habits.length - 1} aria-label="Move down">↓</button>
-              {h.custom && (
-                <>
-                  <button type="button" className="btn btn-sm" onClick={() => setEditing(h)}>Edit</button>
-                  <button type="button" className="btn btn-sm btn-danger" onClick={() => remove(h)}>Delete</button>
-                </>
-              )}
+              <span className="grow">{h.title}</span>
+              <span className="row-inline" style={{ gap: 2 }}>
+                <button type="button" className="wbtn ghost small" onClick={() => move(i, -1)} disabled={i === 0} aria-label="Move up">
+                  ↑
+                </button>
+                <button type="button" className="wbtn ghost small" onClick={() => move(i, 1)} disabled={i === habits.length - 1} aria-label="Move down">
+                  ↓
+                </button>
+                {h.custom && (
+                  <button type="button" className="wbtn ghost small" onClick={() => setEditing(h)}>
+                    Edit
+                  </button>
+                )}
+                <button type="button" className="wbtn danger small" onClick={() => remove(h)}>
+                  Remove
+                </button>
+              </span>
             </li>
           );
         })}
       </ul>
-      <p className="mt-3 text-xs text-muted">Resets each day. Past days stay in your calendar.</p>
+      <div className="row-inline" style={{ marginTop: 12, justifyContent: "space-between" }}>
+        <span className="small muted">Resets each day. Past days stay in your calendar.</span>
+        <button type="button" className="wbtn soft small" onClick={() => setAdding(true)}>
+          + Add habit
+        </button>
+      </div>
 
       {adding && (
         <TextDialog
