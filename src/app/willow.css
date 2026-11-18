@@ -1,3 +1,4 @@
+@layer theme, base, components, utilities;
 @layer components {
 /* Mino — layout concept: sidebar on desktop, bottom bar on phones, one scrolling column of soft cards. */
 :root {
@@ -695,4 +696,5 @@ html body { font: 15px/1.5 "DM Sans Variable", system-ui, -apple-system, "Segoe 
 .topbar .brand { font-size: 20px; }
 @media (min-width: 900px) { .topbar .brand { display: none; } }
 .divider { height: 14px; }
+.shell { width: 100%; }
 }
