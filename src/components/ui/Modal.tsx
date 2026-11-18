@@ -52,8 +52,8 @@ export function Modal({
 
 /** Confirmation for destructive actions: `const { ask, dialog } = useConfirm(); if (await ask("…")) …` */
 export function useConfirm() {
-  const [state, setState] = useState<{ msg: string; resolve: (v: boolean) => void } | null>(null);
-  const ask = (msg: string) => new Promise<boolean>((resolve) => setState({ msg, resolve }));
+  const [state, setState] = useState<{ msg: string; resolve: (v: boolean) => void; label: string } | null>(null);
+  const ask = (msg: string, label = "Delete") => new Promise<boolean>((resolve) => setState({ msg, resolve, label }));
   const done = (v: boolean) => {
     state?.resolve(v);
     setState(null);
@@ -65,9 +65,7 @@ export function useConfirm() {
         <button className="btn" onClick={() => done(false)}>
           Cancel
         </button>
-        <button className="btn btn-danger" onClick={() => done(true)}>
-          Delete
-        </button>
+        <button className={state.label === "Delete" ? "btn btn-danger" : "btn btn-primary"} onClick={() => done(true)}>{state.label}</button>
       </div>
     </Modal>
   );

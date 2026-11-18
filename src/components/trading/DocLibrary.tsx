@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import { fmtStamp } from "@/lib/dates";
 import { Modal, ErrorNote, useConfirm } from "@/components/ui/Modal";
 import type { DocKind, TradingDoc } from "@/lib/trading/types";
+import { exampleSessionContent } from "@/lib/trading/templates";
 
 type Sort = "modified" | "created" | "title";
 
@@ -126,6 +127,13 @@ function DocForm({ kind, noun, doc, categories, onClose, onSaved }: { kind: DocK
   const [category, setCategory] = useState(doc?.category ?? "");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [from, setFrom] = useState("blank");
+  const [templates, setTemplates] = useState<{ id: string; title: string }[]>([]);
+  useEffect(() => {
+    if (doc || kind !== "backtest") return;
+    createClient().from("trading_documents").select("id,title").eq("kind", "template").eq("archived", false).order("title")
+      .then(({ data }) => setTemplates((data as { id: string; title: string }[]) ?? []));
+  }, [doc, kind]);
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
@@ -134,7 +142,14 @@ function DocForm({ kind, noun, doc, categories, onClose, onSaved }: { kind: DocK
     setBusy(true);
     const sb = createClient();
     const row = { title: t, description: description.trim(), category: category.trim() };
-    const { error } = doc ? await sb.from("trading_documents").update(row).eq("id", doc.id) : await sb.from("trading_documents").insert({ kind, ...row });
+    let error: { message: string } | null = null;
+    if (doc) {
+      ({ error } = await sb.from("trading_documents").update(row).eq("id", doc.id));
+    } else {
+      const ins = await sb.from("trading_documents").insert({ kind, ...row }).select("id").single();
+      error = ins.error;
+      if (!error && ins.data) error = await seedPages(sb, ins.data.id as string, from);
+    }
     setBusy(false);
     if (error) return setError(error.message);
     onSaved();
@@ -155,6 +170,16 @@ function DocForm({ kind, noun, doc, categories, onClose, onSaved }: { kind: DocK
           <input id="d-c" className="input" list="d-cats" value={category} maxLength={80} onChange={(e) => setCategory(e.target.value)} />
           <datalist id="d-cats">{categories.map((c) => <option key={c} value={c} />)}</datalist>
         </div>
+        {!doc && kind !== "concept" && (
+          <div>
+            <label className="label" htmlFor="d-from">Start from</label>
+            <select id="d-from" className="input" value={from} onChange={(e) => setFrom(e.target.value)}>
+              <option value="blank">Blank page</option>
+              <option value="example">Example session template</option>
+              {templates.map((t) => <option key={t.id} value={t.id}>Template: {t.title}</option>)}
+            </select>
+          </div>
+        )}
         <ErrorNote error={error} />
         <div className="flex justify-end gap-2">
           <button type="button" className="btn" onClick={onClose}>Cancel</button>
@@ -163,4 +188,18 @@ function DocForm({ kind, noun, doc, categories, onClose, onSaved }: { kind: DocK
       </form>
     </Modal>
   );
+}
+
+/** Gives a new document its first page: blank, the example session template, or a copy of a saved template. */
+async function seedPages(sb: ReturnType<typeof createClient>, docId: string, from: string): Promise<{ message: string } | null> {
+  if (from === "blank") return null;
+  if (from === "example") {
+    const { error } = await sb.from("trading_document_pages").insert({ document_id: docId, position: 0, content: exampleSessionContent() });
+    return error ? { message: error.message } : null;
+  }
+  const { data: pages, error: readErr } = await sb.from("trading_document_pages").select("position,content").eq("document_id", from).order("position");
+  if (readErr) return { message: readErr.message };
+  if (!pages?.length) return null;
+  const { error } = await sb.from("trading_document_pages").insert(pages.map((p: { position: number; content: JSONContent }) => ({ document_id: docId, position: p.position, content: p.content })));
+  return error ? { message: error.message } : null;
 }

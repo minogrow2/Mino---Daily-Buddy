@@ -97,3 +97,12 @@ Serve `legacy/willow` on port 8765 and run the scripts in `legacy/tests` with No
     node legacy/tests/test-r19.js
 
 The tests expect `http://127.0.0.1:8765/index.html`. Chromium is installed for Playwright in the original environment.
+
+## Finance Trading makeover, stage 2 (backtesting and live trading)
+
+- Backtesting Logger: session library with a "Start from" option (blank, example session template with 13 headings, or a saved template). Templates live under the Templates tab.
+- Backtesting Analytics: strategies (create, edit, archive, restore, delete with confirm), a flexible trade table with custom columns and CSV export, statistics rings, equity and P/L charts, and a monthly calendar. The compare tab shows per-strategy stats only, so trades are never mixed.
+- Live Trading: off until "ACTIVATE LIVE TRADING" is confirmed. Prop firm accounts with risk rules (daily and overall loss as amount or %, static or trailing drawdown, floating P/L and fees options, reset timezone and time, warning levels, trade limit, profit target). Account page has Risk, Trades, Statistics and History tabs. Breaches are confirmed and logged. Calculators and the pre-trade checklist are under Live Trading → Calculators.
+- Numbers from Postgres are normalized in the shared row hook (numeric columns arrive as strings).
+- Daily loss percentages are measured against the account size. The `daily_loss_basis` column exists but is not exposed yet.
+- Not built yet: the Live Trading column resize drag, the data import from old Willow localStorage/IndexedDB, and browser end-to-end tests (the sandbox cannot reach supabase.co, so test on the Vercel preview).

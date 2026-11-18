@@ -3,11 +3,11 @@ import Link from "next/link";
 const CARDS = [
   { href: "/goals/finance-trading/concepts", title: "Concepts and Platforms", img: "concepts", live: true,
     blurb: "Study, document, and organize everything I learn about financial markets, trading concepts, platforms, and strategies." },
-  { href: "/goals/finance-trading/backtesting", title: "Backtesting Logger", img: "logger", live: false,
+  { href: "/goals/finance-trading/backtesting", title: "Backtesting Logger", img: "logger", live: true,
     blurb: "Record and document every backtesting session with detailed explanations, screenshots, and observations." },
-  { href: "/goals/finance-trading/analytics", title: "Backtesting Analytics", img: "analytics", live: false,
+  { href: "/goals/finance-trading/analytics", title: "Backtesting Analytics", img: "analytics", live: true,
     blurb: "Analyze strategy performance through statistics, performance indicators, and a monthly profit-and-loss calendar." },
-  { href: "/goals/finance-trading/live", title: "Live Trading", img: "live", live: false,
+  { href: "/goals/finance-trading/live", title: "Live Trading", img: "live", live: true,
     blurb: "Manage actual trading activity, prop firm accounts, risk limits, and live trading performance." },
 ];
 
