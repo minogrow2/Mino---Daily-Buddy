@@ -1,22 +1,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/Card";
 import { addDays, fmtDay } from "@/lib/dates";
 import { loadYear } from "@/lib/willow/data";
+import { scoreFn } from "@/lib/willow/heat";
 import { level, weekStart } from "@/lib/willow/logic";
 import type { YearRows } from "@/lib/willow/types";
-import { DayDialog } from "./DayDialog";
 
-const countBy = (days: string[]) => days.reduce<Record<string, number>>((m, d) => ({ ...m, [d]: (m[d] ?? 0) + 1 }), {});
-
-/** One square per day of a year, Monday at the top, columns are weeks. Tap a day to see what it held. */
+/** One square per day of a year, Monday at the top, columns are weeks. Tap a day to open it on the calendar. */
 export function Heatmap({ today, version }: { today: string; version: number }) {
+  const router = useRouter();
   const thisYear = Number(today.slice(0, 4));
   const [year, setYear] = useState(thisYear);
   const [rows, setRows] = useState<YearRows | null>(null);
   const [err, setErr] = useState<string | null>(null);
-  const [picked, setPicked] = useState<string | null>(null);
 
   useEffect(() => {
     let alive = true;
@@ -42,10 +41,7 @@ export function Heatmap({ today, version }: { today: string; version: number }) 
   const days: string[] = [];
   for (let d = start; d <= end; d = addDays(d, 1)) days.push(d);
 
-  const a = countBy(rows?.activityDays ?? []);
-  const c = countBy(rows?.checkDays ?? []);
-  const j = countBy(rows?.journalDays ?? []);
-  const scoreOf = (d: string) => (a[d] ?? 0) + (c[d] ?? 0) + (j[d] ?? 0);
+  const scoreOf = scoreFn(rows);
   const active = days.filter((d) => d >= jan1 && d <= dec31 && scoreOf(d) > 0).length;
 
   return (
@@ -58,7 +54,9 @@ export function Heatmap({ today, version }: { today: string; version: number }) 
           <button type="button" className="wbtn ghost small" aria-label="Previous year" onClick={() => setYear(year - 1)}>
             ‹ {year - 1}
           </button>
-          <strong className="num" style={{ fontSize: 16 }}>{year}</strong>
+          <strong className="num" style={{ fontSize: 16 }}>
+            {year}
+          </strong>
           <button type="button" className="wbtn ghost small" aria-label="Next year" disabled={year >= thisYear} onClick={() => setYear(year + 1)}>
             {year + 1} ›
           </button>
@@ -85,7 +83,7 @@ export function Heatmap({ today, version }: { today: string; version: number }) 
                     disabled={future}
                     title={label}
                     aria-label={label}
-                    onClick={() => setPicked(d)}
+                    onClick={() => router.push(`/calendar?day=${d}`)}
                   />
                 );
               })}
@@ -102,7 +100,6 @@ export function Heatmap({ today, version }: { today: string; version: number }) 
           </div>
         </>
       )}
-      {picked && <DayDialog day={picked} onClose={() => setPicked(null)} />}
     </Card>
   );
 }

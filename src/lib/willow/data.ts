@@ -103,7 +103,7 @@ export async function loadDay(day: string) {
     sb.from("habit_checks").select("habit_id").eq("day", day),
     sb.from("activities").select("id,category,goal_id,title,minutes,me_key,checklist").eq("day", day),
     sb.from("tasks").select("id,title,done").eq("day", day).order("sort_order"),
-    sb.from("journal_entries").select("id,title,body,html,type").eq("day", day),
+    sb.from("journal_entries").select("id,title,body,html,type,tags,favorite").eq("day", day).order("created_at"),
     sb.from("day_moods").select("mood,html,note").eq("day", day).maybeSingle(),
   ]);
   for (const r of [habits, checks, acts, tasks, journal, mood]) fail(r.error);
@@ -112,7 +112,26 @@ export async function loadDay(day: string) {
     checkedIds: (checks.data ?? []).map((r) => r.habit_id as string),
     activities: (acts.data ?? []) as { id: string; category: string; goal_id: string | null; title: string; minutes: number; me_key: string; checklist: boolean }[],
     tasks: (tasks.data ?? []) as { id: string; title: string; done: boolean }[],
-    journal: (journal.data ?? []) as { id: string; title: string; body: string; html: string | null; type: string }[],
+    journal: (journal.data ?? []) as { id: string; title: string; body: string; html: string | null; type: string; tags: string[]; favorite: boolean }[],
     mood: (mood.data ?? null) as { mood: string | null; html: string; note: string } | null,
   };
+}
+
+/** Every journal entry, newest day first. The journal page filters them in the browser. */
+export async function loadJournal(): Promise<JournalEntry[]> {
+  const { data, error } = await createClient()
+    .from("journal_entries")
+    .select("id,day,type,title,body,html,tags,favorite")
+    .order("day", { ascending: false })
+    .order("created_at", { ascending: false })
+    .limit(500);
+  fail(error);
+  return (data ?? []) as JournalEntry[];
+}
+
+/** The photos on one day, in order. */
+export async function loadDayPhotos(day: string): Promise<MoodPhoto[]> {
+  const { data, error } = await createClient().from("mood_photos").select("day,media_id,position").eq("day", day).order("position");
+  fail(error);
+  return (data ?? []) as MoodPhoto[];
 }

@@ -150,3 +150,33 @@ export async function askWillow(messages: { role: "user" | "assistant"; content:
 export async function clearChat() {
   fail((await createClient().from("chat_messages").delete().not("id", "is", null)).error);
 }
+
+/* Journal entries */
+export async function saveJournalEntry(e: { id: string | null; day: string; type: string; title: string; html: string; body: string; tags: string[] }): Promise<string> {
+  const sb = createClient();
+  const row = { day: e.day, type: e.type, title: e.title.slice(0, 300), html: e.html, body: e.body, tags: e.tags };
+  if (e.id) {
+    fail((await sb.from("journal_entries").update(row).eq("id", e.id)).error);
+    return e.id;
+  }
+  const id = newId();
+  fail((await sb.from("journal_entries").insert({ id, ...row })).error);
+  return id;
+}
+export async function setJournalFavorite(id: string, on: boolean) {
+  fail((await createClient().from("journal_entries").update({ favorite: on }).eq("id", id)).error);
+}
+export async function deleteJournalEntry(id: string) {
+  fail((await createClient().from("journal_entries").delete().eq("id", id)).error);
+}
+
+/* Manual activities on a calendar day (not the Me Time ticks or the goal checks) */
+export async function addActivity(day: string, a: { title: string; category: string; minutes: number; offline: boolean }): Promise<void> {
+  fail((await createClient().from("activities").insert({ id: newId(), day, category: a.category, title: a.title.slice(0, 300), minutes: a.minutes, offline: a.offline })).error);
+}
+export async function updateActivity(id: string, a: { title: string; day: string; category: string; minutes: number; offline: boolean }): Promise<void> {
+  fail((await createClient().from("activities").update({ title: a.title.slice(0, 300), day: a.day, category: a.category, minutes: a.minutes, offline: a.offline }).eq("id", id)).error);
+}
+export async function deleteActivity(id: string): Promise<void> {
+  fail((await createClient().from("activities").delete().eq("id", id)).error);
+}
