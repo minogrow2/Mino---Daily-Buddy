@@ -4,7 +4,7 @@ Read this first. It was written on 2026-11-17 so a new chat can pick up the work
 
 ## What exists
 
-- **Willow (the current app).** A single-page vanilla JavaScript app. It is also published as an artifact at https://claude.ai/artifact/VcamYHARQTHo82e4wTP5Ce (version 28). Its source is in `legacy/willow/`. Its browser tests are in `legacy/tests/`.
+- **Willow (the current app).** A single-page vanilla JavaScript app. It is also published as an artifact at https://claude.ai/artifact/VcamYHARQTHo82e4wTP5Ce (version 28). Its source was removed after the port; it is in git history before the port commit.
 - **Where Willow keeps data today.** In the browser's storage on the device (key `mino.state.v2`), plus the artifact's own shared database. Photos sit in the browser's IndexedDB and never leave the device.
 - **Supabase project.** `Willow - Daily Buddy`, id `bytcbxiomfycsxikcpzo`, region ap-northeast-1. The schema is in `supabase/migrations/20261117000000_willow_core_schema.sql`.
   - 31 user-owned tables. Each has `user_id`, which defaults to `auth.uid()`.
@@ -41,7 +41,7 @@ Read this first. It was written on 2026-11-17 so a new chat can pick up the work
 
 ## Next steps, in order
 
-1. Build the app shell (sidebar / bottom nav) and port each Willow page. Compare with `legacy/willow/`, then run the matching checks from `legacy/tests/`.
+1. Done: every Willow page is ported. The legacy app and its tests were removed.
 2. Build a one-time import: read `mino.state.v2` from localStorage, upload IndexedDB photos to the `media` bucket, insert rows. Keep the local copy until verified.
 3. Finance Trading makeover (brief below / in chat): new tables via new migration files, then pages under `/goals/finance-trading/...`.
 
@@ -83,20 +83,12 @@ Photo ids in the old state point at IndexedDB records. The import has to upload 
 - Goal ids: `trading`, `ai`, `glow`, `tech`, `money`, `reading`, `cs`.
 - Mood keys: `happy`, `peaceful`, `thinking`, `excited`, `neutral`, `sad`, `stressed`, `unproductive`, `tired`.
 - Dates use Asia/Manila time. Currency is PHP (₱). The weekly savings target is ₱1,000.
-- Visuals: Fredoka for titles and Outfit for body text. The scenic backgrounds are in `legacy/willow/img/`.
+- Visuals: Fredoka for titles and Outfit for body text. The scenic backgrounds are in `public/img/willow/`.
 
 ## Finance Trading brief
 
 The Finance Trading brief (Parts 1–8) was given in chat on 2026-11-17. It is not saved in this repo. Paste it into the new chat.
 
-## Running the Willow tests
-
-Serve `legacy/willow` on port 8765 and run the scripts in `legacy/tests` with Node and Playwright, for example:
-
-    python3 -m http.server 8765 --bind 127.0.0.1 --directory legacy/willow
-    node legacy/tests/test-r19.js
-
-The tests expect `http://127.0.0.1:8765/index.html`. Chromium is installed for Playwright in the original environment.
 
 ## Finance Trading makeover, stage 2 (backtesting and live trading)
 
