@@ -1,0 +1,23 @@
+@layer components {
+  /* The read-only rich text on a scrapbook day: no editor box, so it reads like the legacy page. */
+  .scrap-text .rt {
+    min-height: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: none !important;
+  }
+
+  /* Mood icons in lists, the distribution and the month grid, sized to the line of text. */
+  .mi-sm {
+    width: 18px;
+    height: 18px;
+    display: block;
+    flex: none;
+  }
+  .mood-cal .day .mi {
+    width: 20px;
+    height: 20px;
+    display: block;
+    margin: 0 auto;
+  }
+}

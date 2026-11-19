@@ -1,0 +1,7 @@
+/* Goal pages: the actions beside course, workout and order rows, and the notes block. Kept in a layer so the Willow styles win. */
+@layer components {
+  .course-item { align-items: flex-start; }
+  .course-controls { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; align-items: center; max-width: 100%; }
+  .goal-row-actions { display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-end; align-items: center; }
+  .goal-notes { min-width: 0; }
+}

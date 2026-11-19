@@ -1,0 +1,3 @@
+/* Settings and the look. Big boxes can be any colour, so the muted text inside a card follows the card's ink, not the page's. */
+:root { --card-muted: var(--muted); }
+.card { --muted: var(--card-muted); }

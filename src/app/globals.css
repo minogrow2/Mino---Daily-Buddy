@@ -1,35 +1,5 @@
 @import "tailwindcss";
 
-/* Willow design tokens (carried over from legacy/willow/styles.css) */
-:root {
-  --bg: #fbf6ef;
-  --surface: #fffdf9;
-  --surface-2: #f8f0e8;
-  --fg: #3d2e2a;
-  --muted: #857370;
-  --line: #eadfd6;
-  --pink: #f7d4d9;
-  --pink-soft: #fbe9ec;
-  --rose: #a9535f;
-  --butter: #fbefb8;
-  --butter-deep: #e2be5e;
-  --good: #6e9c7e;
-  --warn: #c98a3e;
-  --radius: 18px;
-  --shadow: 0 1px 2px rgba(61, 46, 42, 0.05), 0 6px 18px rgba(61, 46, 42, 0.05);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #211a18;
-    --surface: #2c2320;
-    --surface-2: #332a26;
-    --fg: #f5ece6;
-    --muted: #b9a79f;
-    --line: #443832;
-  }
-}
-
 @theme inline {
   --color-bg: var(--bg);
   --color-surface: var(--surface);
@@ -46,10 +16,179 @@
   --shadow-soft: var(--shadow);
   --font-sans: "Outfit Variable", system-ui, sans-serif;
   --font-display: "Fredoka Variable", system-ui, sans-serif;
+  --font-nunito: "Nunito Variable", system-ui, sans-serif;
+  --font-montserrat: "Montserrat Variable", system-ui, sans-serif;
 }
+
+@layer components {
 
 body {
   background: var(--bg);
   color: var(--fg);
   font-family: "Outfit Variable", system-ui, sans-serif;
+}
+
+/* ---------- Shared UI ---------- */
+:root {
+  --glass-line: rgba(255, 255, 255, 0.7);
+  --sage-deep: #3f6b50;
+  --sage-fill: rgba(110, 156, 126, 0.16);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --glass-line: rgba(255, 255, 255, 0.1);
+    --sage-fill: rgba(110, 156, 126, 0.22);
+  }
+}
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
+  backdrop-filter: blur(14px) saturate(1.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.ft-bg {
+  min-height: 100%;
+  background:
+    linear-gradient(rgba(251, 246, 239, 0.78), rgba(251, 246, 239, 0.9)),
+    url("/img/ft/forest.jpg") center / cover fixed;
+}
+@media (prefers-color-scheme: dark) {
+  .ft-bg {
+    background:
+      linear-gradient(rgba(33, 26, 24, 0.82), rgba(33, 26, 24, 0.92)),
+      url("/img/ft/forest.jpg") center / cover fixed;
+  }
+}
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+  border-radius: 999px; padding: 0.5rem 1rem; font-size: 0.875rem; font-weight: 500;
+  border: 1px solid var(--line); background: var(--surface); color: var(--fg);
+  cursor: pointer; transition: transform 0.12s, background 0.15s, opacity 0.15s;
+}
+.btn:hover:not(:disabled) { background: var(--surface-2); }
+.btn:active:not(:disabled) { transform: scale(0.98); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-primary { background: var(--rose); border-color: var(--rose); color: #fff; }
+.btn-primary:hover:not(:disabled) { background: #964651; }
+.btn-sage { background: var(--sage-deep); border-color: var(--sage-deep); color: #fff; }
+.btn-sage:hover:not(:disabled) { background: #345a43; }
+.btn-danger { color: #b3261e; border-color: rgba(179, 38, 30, 0.35); }
+.btn-sm { padding: 0.3rem 0.7rem; font-size: 0.8rem; }
+.input {
+  width: 100%; border-radius: 12px; border: 1px solid var(--sage); background: var(--sage-fill);
+  padding: 0.5rem 0.75rem; color: var(--fg); outline: none; font: inherit;
+}
+.input:focus { border-color: var(--rose); box-shadow: 0 0 0 3px rgba(169, 83, 95, 0.15); }
+.label { display: block; font-size: 0.8rem; color: var(--muted); margin-bottom: 0.25rem; }
+.tag { display: inline-block; border-radius: 999px; padding: 0.1rem 0.6rem; font-size: 0.72rem; background: var(--sage-fill); color: var(--sage-deep); }
+@media (prefers-color-scheme: dark) { .tag { color: #bfe0c9; } }
+.bar { height: 8px; border-radius: 999px; background: var(--sage-fill); overflow: hidden; }
+.bar > i { display: block; height: 100%; background: var(--sage); border-radius: 999px; transition: width 0.3s; }
+
+/* ---------- Rich text editor ---------- */
+.paper { background: #fffdf9; color: #3d2e2a; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,.06), 0 12px 32px rgba(61,46,42,.12); }
+.ProseMirror { outline: none; min-height: 60vh; padding: 3rem 3.5rem; font-size: 16px; line-height: 1.65; }
+@media (max-width: 640px) { .ProseMirror { padding: 1.25rem; } }
+.ProseMirror.compact { min-height: 8rem; padding: 0.75rem 1rem; }
+.ProseMirror h1 { font-size: 2rem; font-weight: 600; margin: 1.2rem 0 0.5rem; line-height: 1.25; }
+.ProseMirror h2 { font-size: 1.5rem; font-weight: 600; margin: 1rem 0 0.4rem; line-height: 1.3; }
+.ProseMirror h3 { font-size: 1.2rem; font-weight: 600; margin: 0.9rem 0 0.3rem; }
+.ProseMirror p { margin: 0.4rem 0; }
+.ProseMirror ul, .ProseMirror ol { padding-left: 1.5rem; margin: 0.4rem 0; }
+.ProseMirror ul { list-style: disc; } .ProseMirror ol { list-style: decimal; }
+.ProseMirror ul[data-type="taskList"] { list-style: none; padding-left: 0.2rem; }
+.ProseMirror ul[data-type="taskList"] li { display: flex; gap: 0.5rem; align-items: flex-start; }
+.ProseMirror ul[data-type="taskList"] li > label { margin-top: 0.3rem; }
+.ProseMirror ul[data-type="taskList"] li > div { flex: 1; }
+.ProseMirror ul[data-type="taskList"] li[data-checked="true"] > div { text-decoration: line-through; opacity: 0.6; }
+.ProseMirror blockquote { border-left: 4px solid var(--sage); margin: 0.8rem 0; padding: 0.2rem 1rem; color: #6a5a55; background: rgba(110,156,126,.08); border-radius: 0 8px 8px 0; }
+.ProseMirror hr { border: none; border-top: 2px solid #eadfd6; margin: 1.4rem 0; }
+.ProseMirror table { border-collapse: collapse; width: 100%; margin: 0.8rem 0; table-layout: fixed; }
+.ProseMirror th, .ProseMirror td { border: 1px solid #d9cdc3; padding: 0.4rem 0.6rem; vertical-align: top; position: relative; min-width: 3rem; }
+.ProseMirror th { background: #f5ede5; font-weight: 600; text-align: left; }
+.ProseMirror .selectedCell::after { content: ""; position: absolute; inset: 0; background: rgba(110,156,126,.2); pointer-events: none; }
+.ProseMirror img { max-width: 100%; height: auto; border-radius: 6px; display: block; margin: 0.6rem 0; cursor: pointer; }
+.ProseMirror img.ProseMirror-selectednode { outline: 3px solid var(--sage); }
+.ProseMirror p.is-editor-empty:first-child::before { content: attr(data-placeholder); color: #b3a49c; float: left; height: 0; pointer-events: none; }
+.ProseMirror a { color: var(--rose); text-decoration: underline; }
+.ProseMirror mark { border-radius: 3px; padding: 0 2px; }
+
+/* ---------- Scrapbook accents: tinted frosted cards and washi tape ---------- */
+.glass { position: relative; }
+.glass-pink { background: linear-gradient(160deg, rgba(247, 212, 217, 0.72), rgba(255, 253, 249, 0.66)); }
+.glass-sage { background: linear-gradient(160deg, rgba(110, 156, 126, 0.2), rgba(255, 253, 249, 0.66)); }
+.glass-butter { background: linear-gradient(160deg, rgba(251, 239, 184, 0.78), rgba(255, 253, 249, 0.66)); }
+@media (prefers-color-scheme: dark) {
+  .glass-pink { background: linear-gradient(160deg, rgba(169, 83, 95, 0.28), rgba(44, 35, 32, 0.66)); }
+  .glass-sage { background: linear-gradient(160deg, rgba(110, 156, 126, 0.26), rgba(44, 35, 32, 0.66)); }
+  .glass-butter { background: linear-gradient(160deg, rgba(226, 190, 94, 0.22), rgba(44, 35, 32, 0.66)); }
+}
+.tape {
+  position: absolute; top: -11px; left: 50%; width: 96px; height: 22px;
+  transform: translateX(-50%) rotate(-3deg);
+  background: rgba(251, 239, 184, 0.8);
+  box-shadow: 0 1px 2px rgba(61, 46, 42, 0.08);
+  border-radius: 3px; pointer-events: none;
+}
+.tape-sage { background: rgba(156, 202, 169, 0.75); }
+.tape-pink { background: rgba(247, 212, 217, 0.9); }
+.tape-left { left: 12px; transform: rotate(-28deg); }
+
+/* ---------- Goal notes (every goal): the rich-text box and the scrapbook of saved notes, as in the legacy app ---------- */
+:root { --note-edge: color-mix(in srgb, var(--sage-deep) 32%, transparent); }
+.rt-wrap { border: 1px solid var(--line); border-radius: 16px; background: color-mix(in srgb, var(--surface) 70%, transparent); overflow: hidden; }
+.rt-bar { display: flex; flex-wrap: wrap; gap: 4px; padding: 6px; border-bottom: 1px solid var(--line); background: var(--surface-2); }
+.rt-btn { border: 0; background: var(--surface); border-radius: 10px; padding: 5px 10px; font: inherit; font-size: 13px; color: var(--fg); cursor: pointer; }
+.rt-btn:hover { background: var(--pink-soft); }
+.rt-btn[aria-pressed="true"] { background: var(--pink); font-weight: 600; }
+.rt-btn:focus-visible { outline: 2px solid var(--rose); outline-offset: 2px; }
+.rt { min-height: 130px; padding: 12px 14px; outline: none; line-height: 1.6; overflow-wrap: anywhere; }
+.rt:focus { box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--rose) 35%, transparent); }
+.rt-view { min-height: 0; padding: 0; }
+.rt p { margin: 0 0 0.5em; }
+.rt ul { list-style: disc; padding-left: 1.4em; }
+.rt ol { list-style: decimal; padding-left: 1.4em; }
+.rt blockquote { margin: 0.4em 0; padding: 0.2em 0 0.2em 0.9em; border-left: 3px solid var(--rose); color: var(--muted); font-style: italic; }
+.rt a { color: var(--rose); text-decoration: underline; }
+.rt p.is-editor-empty:first-child::before { content: attr(data-placeholder); float: left; height: 0; color: var(--muted); pointer-events: none; }
+
+.photo-add { cursor: pointer; }
+.photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin-top: 12px; }
+.photo { margin: 0; display: grid; gap: 4px; min-width: 0; }
+.photo img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 10px; background: var(--surface-2); }
+.photo figcaption { display: flex; justify-content: center; }
+
+.scrap-sub { display: flex; align-items: center; gap: 10px; margin: 16px 0 10px; font-size: 11px; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); }
+.scrap-sub::after { content: ""; flex: 1; height: 1px; background: var(--note-edge); }
+.scrapbook { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 26px 14px; padding: 10px 2px 4px; }
+.scrap { position: relative; display: grid; min-width: 0; transform: rotate(var(--tilt, 0deg)); transition: transform .2s ease; }
+.scrap:hover, .scrap:focus-within { transform: rotate(0deg) translateY(-3px); }
+.scrap.tilt-0 { --tilt: -1.6deg; }
+.scrap.tilt-1 { --tilt: 1.1deg; }
+.scrap.tilt-2 { --tilt: -.7deg; }
+.scrap.tilt-3 { --tilt: 1.8deg; }
+.scrap::before { content: ""; position: absolute; top: -9px; left: 50%; width: 58px; height: 18px; transform: translateX(-50%) rotate(-3deg); border-radius: 2px; background: color-mix(in srgb, var(--sage) 45%, transparent); z-index: 2; pointer-events: none; }
+.scrap.tone-pink::before { background: color-mix(in srgb, var(--pink) 80%, var(--rose) 20%); }
+.scrap.tone-butter::before { background: color-mix(in srgb, var(--butter-deep) 50%, transparent); }
+.scrap-open { appearance: none; box-sizing: border-box; display: grid; align-content: start; gap: 8px; width: 100%; height: 100%; min-width: 0; margin: 0; padding: 14px 12px 12px; font: inherit; text-align: left; color: var(--fg); border: 1px solid var(--note-edge); border-radius: 6px 6px 20px 6px; background: color-mix(in srgb, var(--surface) 62%, transparent); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 10px 24px rgba(61, 46, 42, .12); cursor: pointer; }
+.scrap.tone-pink .scrap-open { background: color-mix(in srgb, var(--pink) 42%, transparent); }
+.scrap.tone-butter .scrap-open { background: color-mix(in srgb, var(--butter) 46%, transparent); }
+.scrap.tone-sage .scrap-open { background: color-mix(in srgb, var(--sage) 26%, transparent); }
+.scrap-open:focus-visible { outline: 2px solid var(--rose); outline-offset: 3px; }
+.scrap.is-pinned .scrap-open { border-color: color-mix(in srgb, var(--rose) 55%, transparent); box-shadow: 0 10px 24px rgba(61, 46, 42, .14), inset 0 0 0 1px color-mix(in srgb, var(--rose) 30%, transparent); }
+.scrap-photo { position: relative; display: block; aspect-ratio: 1; overflow: hidden; border-radius: 4px; background: var(--surface-2); }
+.scrap-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.scrap-count { position: absolute; right: 6px; bottom: 6px; font-size: 12px; padding: 2px 8px; border-radius: 999px; background: var(--surface); color: var(--fg); }
+.scrap-date { font-family: "Fredoka Variable", system-ui, sans-serif; font-weight: 500; font-size: 15px; line-height: 1.2; }
+.scrap-note { font-size: 13px; line-height: 1.45; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow-wrap: anywhere; }
+.scrap-link { justify-self: start; margin-top: 2px; font-size: 12px; font-weight: 600; color: var(--rose); }
+.scrap-pin { position: absolute; top: 6px; right: 6px; z-index: 3; width: 32px; height: 32px; display: grid; place-items: center; padding: 0; border: 1px solid var(--note-edge); border-radius: 50%; background: color-mix(in srgb, var(--surface) 70%, transparent); color: var(--muted); cursor: pointer; transition: transform .2s ease; }
+.scrap-pin svg { width: 16px; height: 16px; }
+.scrap-pin[aria-pressed="true"] { background: var(--rose); color: #fff; border-color: transparent; transform: rotate(35deg); }
+.rt ul[data-type="taskList"] { list-style: none; padding-left: 0.2em; }
+.rt li[data-type="taskItem"] { display: flex; gap: 0.5em; align-items: flex-start; }
+.rt li[data-type="taskItem"] > label { display: inline-flex; margin-top: 0.3em; }
+.rt li[data-type="taskItem"] > label input { accent-color: var(--sage-deep); width: 1rem; height: 1rem; }
 }

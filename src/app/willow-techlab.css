@@ -1,0 +1,9 @@
+@layer components {
+/* Tech Lab and Screen Time: the few rules the shared willow.css does not have yet. */
+.tech-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+.screen-chart { display: block; width: 100%; height: auto; }
+.screen-legend { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-top: 8px; font-size: 12px; color: var(--muted); }
+.screen-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; border: 1px solid var(--glass-edge); }
+.screen-record { flex-wrap: wrap; row-gap: 6px; }
+.screen-record-actions { display: flex; flex-wrap: wrap; gap: 2px; }
+}

@@ -1,0 +1,11 @@
+@layer components {
+  /* Analytics page: header, range picker, chart legends, notes and the growth list. Colours come from the tokens in willow.css. */
+  .ana-head { justify-content: space-between; }
+  .row-inline .ana-range.winput { flex: 0 0 auto; width: auto; }
+  .ana-legend { gap: 12px; margin-top: 8px; }
+  .ana-note { margin-top: 6px; }
+  .ana-summary { margin-top: 10px; }
+  .ana-growth { list-style: none; margin: 0; padding: 0; }
+  .ana-growth li { padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .table-scroll table.simple td.ana-wrap { white-space: normal; }
+}
