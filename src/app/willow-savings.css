@@ -1,0 +1,26 @@
+@layer components {
+  /* Savings: the pink summary card, flat, as in the legacy app. */
+  .card.sv-hero { background: var(--pink-soft); box-shadow: none; }
+  .sv-note { margin-top: 10px; }
+  .sv-hero-bar { margin-top: 16px; }
+  .sv-hero-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+
+  /* Rows that can wrap on a phone: text first, then amount and buttons on the next line if needed. */
+  .item.wrap-row { flex-wrap: wrap; }
+  .item.wrap-row .grow { flex: 1 1 180px; }
+  .sv-amount { white-space: nowrap; }
+  .item-actions { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+
+  /* Library: status select inside a list row keeps its natural width. */
+  .item select.lib-status { width: auto; flex: 0 0 auto; }
+
+  /* Knowledge notes: flat cards, as in the legacy app. */
+  .card.lib-note { padding: 14px; box-shadow: none; background: var(--surface-2); display: grid; gap: 6px; align-content: start; min-width: 0; }
+  .card.lib-note h3 { margin: 8px 0 4px; overflow-wrap: anywhere; }
+  .lib-note-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .lib-body { white-space: pre-wrap; overflow-wrap: anywhere; }
+  .lib-tags { color: var(--muted); font-size: 13px; overflow-wrap: anywhere; }
+
+  .lib-search { align-items: center; }
+  .lib-search .winput { flex: 1 1 200px; }
+}

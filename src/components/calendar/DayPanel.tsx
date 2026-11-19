@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { EntryDialog } from "@/components/journal/EntryDialog";
+import { ScreenTimeNote } from "@/components/screen/ScreenTimeNote";
 import { MiniEditor } from "@/components/notes/MiniEditor";
 import { Card } from "@/components/ui/Card";
 import { Icon } from "@/components/ui/Icon";
@@ -345,6 +346,11 @@ export function DayPanel({ day, today, onChanged }: { day: string; today: string
                 + Journal
               </button>
             </div>
+          </section>
+
+          <section className="day-note">
+            <h3 className="day-note-title">Screen time</h3>
+            <ScreenTimeNote day={day} />
           </section>
         </div>
       </div>
