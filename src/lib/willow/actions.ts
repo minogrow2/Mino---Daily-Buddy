@@ -1,3 +1,4 @@
+import { invalidateSettings } from "./settings";
 // Writes for the Home page. Each one saves to Supabase; the page updates its own copy first, then keeps it if the save worked.
 import { createClient } from "@/lib/supabase/client";
 import { deleteMedia, uploadImage } from "@/lib/media";
@@ -124,6 +125,7 @@ export async function saveReflection(day: string, lines: { learned: string; done
 
 /* Settings the Home page reads */
 export async function setChatJournal(on: boolean) {
+  invalidateSettings();
   fail((await createClient().from("user_settings").upsert({ chat_journal: on }, { onConflict: "user_id" })).error);
 }
 

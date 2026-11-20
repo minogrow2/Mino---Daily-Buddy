@@ -1,6 +1,6 @@
 // Writes for the Settings page. Each one saves to Supabase and throws on error. Chat journal uses setChatJournal in actions.ts.
 import { createClient } from "@/lib/supabase/client";
-import type { Colours, ThemeMode } from "./settings";
+import { invalidateSettings, type Colours, type ThemeMode } from "./settings";
 
 const fail = (e: { message: string } | null) => {
   if (e) throw new Error(e.message);
@@ -17,6 +17,7 @@ async function mergeExtra(change: (extra: Record<string, unknown>) => void) {
 }
 
 export async function saveName(name: string) {
+  invalidateSettings();
   await mergeExtra((e) => {
     e.name = name;
   });
@@ -24,6 +25,7 @@ export async function saveName(name: string) {
 
 /** Stored as extra.savingsTarget, the legacy key the Savings page reads. */
 export async function saveSavingsTarget(target: number) {
+  invalidateSettings();
   await mergeExtra((e) => {
     e.savingsTarget = target;
   });
@@ -31,6 +33,7 @@ export async function saveSavingsTarget(target: number) {
 
 /** Stored as extra.colors ({ big, small, main } hex), the legacy shape. An empty set removes the key. */
 export async function saveColours(colours: Colours) {
+  invalidateSettings();
   await mergeExtra((e) => {
     if (Object.keys(colours).length) e.colors = colours;
     else delete e.colors;
@@ -38,15 +41,18 @@ export async function saveColours(colours: Colours) {
 }
 
 export async function saveTheme(theme: ThemeMode) {
+  invalidateSettings();
   fail((await createClient().from("user_settings").upsert({ theme }, { onConflict: "user_id" })).error);
 }
 
 export async function saveReminders(on: boolean) {
+  invalidateSettings();
   fail((await createClient().from("user_settings").upsert({ reminders: on }, { onConflict: "user_id" })).error);
 }
 
 /** Sets or (for "") removes one scene key in the scenes column, keeping the others. */
 export async function saveScene(page: string, value: string) {
+  invalidateSettings();
   const sb = createClient();
   const { data, error } = await sb.from("user_settings").select("scenes").maybeSingle();
   fail(error);

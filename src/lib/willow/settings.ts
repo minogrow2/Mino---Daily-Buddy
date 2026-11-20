@@ -32,7 +32,7 @@ const isHex = (v: unknown): v is string => typeof v === "string" && /^#[0-9a-f]{
 const isObject = (v: unknown): v is Record<string, unknown> => !!v && typeof v === "object" && !Array.isArray(v);
 
 /** Reads the signed-in person's settings. With no row yet, the legacy defaults are returned. */
-export async function loadSettings(): Promise<WillowSettings> {
+async function fetchSettings(): Promise<WillowSettings> {
   const { data, error } = await createClient()
     .from("user_settings")
     .select("theme,scenes,chat_journal,reminders,extra")
@@ -60,4 +60,26 @@ export async function loadSettings(): Promise<WillowSettings> {
     chatJournal: !!data.chat_journal,
     reminders: data.reminders !== false,
   };
+}
+
+/* A short-lived copy, so the theme, the reminder banner and the goal backgrounds do not each re-read the settings on every page change.
+   Any save clears it, and the copy lasts at most a minute. */
+const SETTINGS_TTL_MS = 60_000;
+let settingsCopy: { at: number; value: Promise<WillowSettings> } | null = null;
+
+/** Drops the copy so the next read is fresh. Every settings write calls this. */
+export function invalidateSettings() {
+  settingsCopy = null;
+}
+
+/** The signed-in person's settings, from the copy when it is fresh. */
+export function loadSettings(): Promise<WillowSettings> {
+  if (settingsCopy && Date.now() - settingsCopy.at < SETTINGS_TTL_MS) return settingsCopy.value;
+  const value = fetchSettings();
+  const entry = { at: Date.now(), value };
+  settingsCopy = entry;
+  value.catch(() => {
+    if (settingsCopy === entry) settingsCopy = null;
+  });
+  return value;
 }

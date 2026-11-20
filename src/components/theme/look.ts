@@ -105,6 +105,24 @@ export function sceneKeyFor(scenes: Scenes, page: string): string {
   return hit ? hit.key : "none";
 }
 
+/** Goal pages that have their own background, by route. Finance Trading lives at its own address. */
+export const GOAL_PAGES: Record<string, string> = {
+  "/goals/ai": "ai",
+  "/goals/glow": "glow",
+  "/goals/tech": "tech",
+  "/goals/money": "money",
+  "/goals/reading": "reading",
+  "/goals/cs": "cs",
+  "/goals/finance-trading": "trading",
+};
+
+/** The scene slot for a route: "home", the goal's own slot, or "default" for every other page. */
+export function sceneSlot(path: string): string {
+  if (path === "/") return "home";
+  const goal = GOAL_PAGES[path.replace(/\/$/, "")];
+  return goal ? `goal-${goal}` : "default";
+}
+
 export function sceneCss(key: string): string {
   const hit = SCENES.find((s) => s.key === key);
   return hit ? `url("${hit.file}")` : "none";
@@ -120,15 +138,18 @@ export type LookCache = {
   d: Record<string, string>;
   h: SceneRef;
   a: SceneRef;
+  /** Each goal's scene, so a goal page paints its own background before the first frame. */
+  g: Record<string, SceneRef>;
 };
 
 export function lookCache(s: Pick<WillowSettings, "theme" | "colours" | "scenes">): LookCache {
-  const ref = (page: "home" | "default"): SceneRef => {
+  const ref = (page: string): SceneRef => {
     const k = sceneKeyFor(s.scenes, page);
     return { k, u: sceneCss(k) };
   };
-  return { m: s.theme, l: lookVars(s.colours, false), d: lookVars(s.colours, true), h: ref("home"), a: ref("default") };
+  const g = Object.fromEntries(Object.values(GOAL_PAGES).map((goal) => [`goal-${goal}`, ref(`goal-${goal}`)]));
+  return { m: s.theme, l: lookVars(s.colours, false), d: lookVars(s.colours, true), h: ref("home"), a: ref("default"), g };
 }
 
 /* Runs as the browser parses the page, before the first paint: puts back the last look shown in this browser. The saved settings load right after and win. Only our own cache is read. */
-export const LOOK_BOOT_SCRIPT = `(function(){try{var c=JSON.parse(localStorage.getItem("${CACHE_KEY}")||"null");if(!c)return;var r=document.documentElement;if(c.m==="light"||c.m==="dark")r.setAttribute("data-theme",c.m);var d=c.m==="dark"||(c.m!=="light"&&matchMedia("(prefers-color-scheme: dark)").matches);var v=d?c.d:c.l;for(var k in v)r.style.setProperty(k,v[k]);var p=location.pathname==="/"?c.h:c.a;r.dataset.scene=p.k;var s=document.createElement("style");s.textContent="#scene{--scene-img:"+p.u+"}";document.head.appendChild(s);}catch(e){}})();`;
+export const LOOK_BOOT_SCRIPT = `(function(){try{var c=JSON.parse(localStorage.getItem("${CACHE_KEY}")||"null");if(!c)return;var r=document.documentElement;if(c.m==="light"||c.m==="dark")r.setAttribute("data-theme",c.m);var d=c.m==="dark"||(c.m!=="light"&&matchMedia("(prefers-color-scheme: dark)").matches);var v=d?c.d:c.l;for(var k in v)r.style.setProperty(k,v[k]);var q=location.pathname.replace(/\\/$/,"")||"/";var g=${JSON.stringify(GOAL_PAGES)};var p=q==="/"?c.h:(g[q]&&c.g&&c.g["goal-"+g[q]])||c.a;r.dataset.scene=p.k;var s=document.createElement("style");s.textContent="#scene{--scene-img:"+p.u+"}";document.head.appendChild(s);}catch(e){}})();`;

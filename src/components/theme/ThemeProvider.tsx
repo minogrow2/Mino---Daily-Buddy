@@ -3,7 +3,7 @@
 import { createContext, Suspense, useCallback, useContext, useEffect, useMemo, useRef, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { DEFAULT_SETTINGS, loadSettings, type WillowSettings } from "@/lib/willow/settings";
-import { CACHE_KEY, LOOK_VARS, isDarkNow, lookCache, lookVars, sceneCss, sceneKeyFor } from "./look";
+import { CACHE_KEY, LOOK_VARS, isDarkNow, lookCache, lookVars, sceneCss, sceneKeyFor, sceneSlot } from "./look";
 
 type LookApi = {
   /** Paints the look and remembers it in this browser. Used after a save. */
@@ -13,24 +13,6 @@ type LookApi = {
 };
 const LookContext = createContext<LookApi>({ apply: () => {}, preview: () => {} });
 export const useLook = () => useContext(LookContext);
-
-/** Goal pages that have their own background. Finance Trading lives at its own address. */
-const GOAL_PAGES: Record<string, string> = {
-  "/goals/ai": "ai",
-  "/goals/glow": "glow",
-  "/goals/tech": "tech",
-  "/goals/money": "money",
-  "/goals/reading": "reading",
-  "/goals/cs": "cs",
-  "/goals/finance-trading": "trading",
-};
-
-/** The scene slot for a route: "home", the goal's own slot, or "default" for every other page. */
-function sceneSlot(path: string): string {
-  if (path === "/") return "home";
-  const goal = GOAL_PAGES[path.replace(/\/$/, "")];
-  return goal ? `goal-${goal}` : "default";
-}
 
 /** Sets the mode attribute, the colour overrides, and the scene on the page root. */
 function paint(s: WillowSettings, path: string) {
