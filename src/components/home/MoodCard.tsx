@@ -1,18 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { MiniEditor } from "@/components/notes/MiniEditor";
+import { useState } from "react";
+import { MoodExplain } from "@/components/mood/MoodExplain";
 import { Card } from "@/components/ui/Card";
 import { ErrorNote, useConfirm } from "@/components/ui/Modal";
 import { Icon } from "@/components/ui/Icon";
 import { usePhotoUrls } from "@/lib/usePhotoUrls";
 import { CATS, ME_TIME, MOODS, MOOD_NOTES } from "@/lib/willow/constants";
-import { addMoodPhoto, removeMoodPhoto, setMeTime, setMood, saveMoodHtml } from "@/lib/willow/actions";
+import { addMoodPhoto, removeMoodPhoto, setMeTime, setMood } from "@/lib/willow/actions";
 import type { DayMood, MoodPhoto } from "@/lib/willow/types";
 import type { HomeCtx } from "./context";
 
 const MAX_PHOTOS_PER_PICK = 6;
-const SAVE_MS = 800;
 
 /** Upserts one day in a list of day rows, the same way the database does. */
 const withDay = (list: DayMood[], day: string, patch: Partial<DayMood>): DayMood[] => {
@@ -33,24 +32,6 @@ export function MoodCard({ ctx }: { ctx: HomeCtx }) {
   const { ask, dialog } = useConfirm();
   const [err, setErr] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-
-  // The explanation autosaves. The last change is written when the card closes.
-  const pending = useRef<string | null>(null);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const flush = () => {
-    if (timer.current) clearTimeout(timer.current);
-    timer.current = null;
-    const html = pending.current;
-    pending.current = null;
-    if (html !== null) saveMoodHtml(today, html).catch((e) => setErr(errorText(e)));
-  };
-  useEffect(() => () => flush(), [today]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const onHtml = (html: string) => {
-    pending.current = html;
-    if (timer.current) clearTimeout(timer.current);
-    timer.current = setTimeout(flush, SAVE_MS);
-  };
 
   const pick = (key: string) => {
     edit((d) => ({ ...d, moods: withDay(d.moods, today, { mood: key }) }));
@@ -130,12 +111,10 @@ export function MoodCard({ ctx }: { ctx: HomeCtx }) {
       {note && <p className="small" style={{ marginTop: 10 }}>{note}</p>}
 
       <div style={{ marginTop: 14 }}>
-        <MiniEditor
-          key={today}
+        <MoodExplain
+          day={today}
           html={row?.html ?? ""}
-          label="What is behind this mood?"
-          placeholder="What is behind it? Write as much or as little as you like."
-          onChange={onHtml}
+          onSaved={(h) => edit((d) => ({ ...d, moods: d.moods.map((m) => (m.day === today ? { ...m, html: h } : m)) }))}
         />
       </div>
 

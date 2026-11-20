@@ -1,19 +1,18 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { MiniEditor } from "@/components/notes/MiniEditor";
+import { useState } from "react";
+import { MoodExplain } from "./MoodExplain";
 import { Card } from "@/components/ui/Card";
 import { Icon } from "@/components/ui/Icon";
 import { ErrorNote, useConfirm } from "@/components/ui/Modal";
 import { fmtDay } from "@/lib/dates";
-import { addMoodPhoto, removeMoodPhoto, saveMoodHtml, setMood } from "@/lib/willow/actions";
+import { addMoodPhoto, removeMoodPhoto, setMood } from "@/lib/willow/actions";
 import { MOODS, MOOD_NOTES } from "@/lib/willow/constants";
 import { explainHtml, withDay, type MoodPage } from "@/lib/willow/mood";
 import type { DayMood, MoodPhoto } from "@/lib/willow/types";
 import { usePhotoUrls } from "@/lib/usePhotoUrls";
 
 const MAX_PER_PICK = 6;
-const SAVE_MS = 800;
 
 const errorText = (e: unknown) => (e instanceof Error ? e.message : "Something went wrong. Try again.");
 
@@ -93,8 +92,7 @@ export function MoodDayCard({
       {cur && MOOD_NOTES[cur] && <p className="small" style={{ marginTop: 10 }}>{MOOD_NOTES[cur]}</p>}
 
       <div style={{ marginTop: 14 }}>
-        <ExplainBox
-          key={day}
+        <MoodExplain
           day={day}
           html={explainHtml(row)}
           onSaved={(h) => edit((p) => ({ ...p, moods: withDay(p.moods, day, { html: h }) }))}
@@ -145,46 +143,3 @@ export function MoodDayCard({
   );
 }
 
-/** The explanation editor. It saves a moment after typing stops, and any unsaved change is written when the day changes. */
-function ExplainBox({
-  day,
-  html,
-  onSaved,
-  onError,
-}: {
-  day: string;
-  html: string;
-  onSaved: (html: string) => void;
-  onError: (msg: string) => void;
-}) {
-  const pending = useRef<string | null>(null);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const flush = () => {
-    if (timer.current) clearTimeout(timer.current);
-    timer.current = null;
-    const h = pending.current;
-    pending.current = null;
-    if (h !== null) {
-      saveMoodHtml(day, h)
-        .then(() => onSaved(h))
-        .catch((e) => onError(errorText(e)));
-    }
-  };
-  useEffect(() => () => flush(), []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const onChange = (h: string) => {
-    pending.current = h;
-    if (timer.current) clearTimeout(timer.current);
-    timer.current = setTimeout(flush, SAVE_MS);
-  };
-
-  return (
-    <MiniEditor
-      html={html}
-      label="What is behind this mood?"
-      placeholder="What is behind it? Write as much or as little as you like."
-      onChange={onChange}
-    />
-  );
-}
