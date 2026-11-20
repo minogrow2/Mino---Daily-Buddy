@@ -11,7 +11,7 @@ const SVG = (children: ReactNode) => (
 );
 
 /** Minimal line icons, matching the rest of the app (no emoji). */
-const ICONS = {
+export const ICONS = {
   home: SVG(
     <>
       <path d="M3.5 10.5 12 3.5l8.5 7" />
