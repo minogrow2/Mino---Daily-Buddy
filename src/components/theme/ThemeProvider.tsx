@@ -3,7 +3,7 @@
 import { createContext, Suspense, useCallback, useContext, useEffect, useMemo, useRef, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { DEFAULT_SETTINGS, loadSettings, type WillowSettings } from "@/lib/willow/settings";
-import { CACHE_KEY, LOOK_VARS, isDarkNow, lookCache, lookVars, sceneCss, sceneKeyFor } from "./look";
+import { CACHE_KEY, LOOK_VARS, isDarkNow, lookCache, lookVars, sceneCss, sceneKeyFor, sceneSlot } from "./look";
 
 type LookApi = {
   /** Paints the look and remembers it in this browser. Used after a save. */
@@ -27,7 +27,7 @@ function paint(s: WillowSettings, path: string) {
     else root.style.removeProperty(name);
   }
 
-  const key = sceneKeyFor(s.scenes, path === "/" ? "home" : "default");
+  const key = sceneKeyFor(s.scenes, sceneSlot(path));
   root.dataset.scene = key;
   document.getElementById("scene")?.style.setProperty("--scene-img", sceneCss(key));
 }

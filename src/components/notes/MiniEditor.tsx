@@ -1,81 +1,13 @@
 "use client";
 
-import type { ReactNode } from "react";
-import { EditorContent, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Placeholder from "@tiptap/extension-placeholder";
-import TaskList from "@tiptap/extension-task-list";
-import TaskItem from "@tiptap/extension-task-item";
+import dynamic from "next/dynamic";
 
-/**
- * The small rich-text box for goal notes: the same toolbar as the legacy app (B, I, U, lists, quote),
- * reading and writing HTML. Read-only mode shows the note without the toolbar.
- */
-export function MiniEditor({
-  html,
-  label,
-  placeholder = "",
-  readOnly = false,
-  checklist = false,
-  onChange,
-}: {
-  html: string;
-  label: string;
-  placeholder?: string;
-  readOnly?: boolean;
-  /** Adds tick boxes to the toolbar (used by the quick journal). */
-  checklist?: boolean;
-  onChange?: (html: string) => void;
-}) {
-  const editor = useEditor({
-    extensions: [
-      StarterKit.configure({ heading: false, codeBlock: false, horizontalRule: false, link: { openOnClick: false, autolink: true } }),
-      Placeholder.configure({ placeholder }),
-      ...(checklist ? [TaskList, TaskItem.configure({ nested: true })] : []),
-    ],
-    content: html,
-    editable: !readOnly,
-    immediatelyRender: false,
-    shouldRerenderOnTransaction: true,
-    editorProps: {
-      attributes: {
-        class: readOnly ? "rt rt-view" : "rt",
-        role: "textbox",
-        "aria-multiline": "true",
-        "aria-label": label,
-        "aria-readonly": String(readOnly),
-      },
-    },
-    onUpdate: ({ editor }) => onChange?.(editor.getHTML()),
-  });
-
-  if (readOnly) return <EditorContent editor={editor} />;
-
-  const tool = (name: string, active: boolean, run: () => void, content: ReactNode) => (
-    <button
-      type="button"
-      className="rt-btn"
-      aria-label={name}
-      aria-pressed={active}
-      onMouseDown={(e) => e.preventDefault()}
-      onClick={run}
-    >
-      {content}
-    </button>
-  );
-
-  return (
-    <div className="rt-wrap">
-      <div className="rt-bar" role="toolbar" aria-label="Text formatting">
-        {tool("Bold", !!editor?.isActive("bold"), () => editor?.chain().focus().toggleBold().run(), <b>B</b>)}
-        {tool("Italic", !!editor?.isActive("italic"), () => editor?.chain().focus().toggleItalic().run(), <i>I</i>)}
-        {tool("Underline", !!editor?.isActive("underline"), () => editor?.chain().focus().toggleUnderline().run(), <u>U</u>)}
-        {tool("Bulleted list", !!editor?.isActive("bulletList"), () => editor?.chain().focus().toggleBulletList().run(), "• List")}
-        {tool("Numbered list", !!editor?.isActive("orderedList"), () => editor?.chain().focus().toggleOrderedList().run(), "1. List")}
-        {tool("Quote", !!editor?.isActive("blockquote"), () => editor?.chain().focus().toggleBlockquote().run(), "“ Quote")}
-        {checklist && tool("Tick box", !!editor?.isActive("taskList"), () => editor?.chain().focus().toggleTaskList().run(), "☐ Checkbox")}
-      </div>
-      <EditorContent editor={editor} />
+/** The tiptap code loads after the page paints, so pages with a note box do not wait for the editor in their first load. */
+export const MiniEditor = dynamic(() => import("./MiniEditorBody").then((m) => m.MiniEditorBody), {
+  ssr: false,
+  loading: () => (
+    <div className="rt-wrap" style={{ minHeight: 120 }} aria-busy="true">
+      <p className="small muted" style={{ padding: 12 }}>Loading the editor…</p>
     </div>
-  );
-}
+  ),
+});

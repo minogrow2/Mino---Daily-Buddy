@@ -25,11 +25,11 @@ export function NoteDialog({
   const hasText = note.html.replace(/<[^>]+>/g, "").trim() !== "";
   return (
     <Modal title={note.pinned ? "Pinned note" : "A saved note"} onClose={onClose} wide>
-      <div className="space-y-4">
-        <p className="text-xs uppercase tracking-wide text-muted">{when}</p>
-        {hasText ? <MiniEditor html={note.html} label="Saved note" readOnly /> : <p className="text-sm text-muted">Only photos in this note.</p>}
+      <div className="grid">
+        <div className="eyebrow">{when}</div>
+        {hasText ? <MiniEditor html={note.html} label="Saved note" readOnly /> : <p className="small muted">Only photos in this note.</p>}
         {note.photos.length > 0 && (
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(140px,1fr))] gap-2.5">
+          <div className="photo-grid">
             {note.photos.map((id) => (
               <figure key={id} className="photo">
                 {urls[id] && (
@@ -40,11 +40,11 @@ export function NoteDialog({
             ))}
           </div>
         )}
-        <div className="flex flex-wrap justify-end gap-2">
-          <button type="button" className="btn btn-sm" onClick={onPin} aria-pressed={note.pinned}>{note.pinned ? "Unpin" : "Pin to the top"}</button>
-          <button type="button" className="btn btn-sm" onClick={onEdit}>Edit this note</button>
-          <button type="button" className="btn btn-sm btn-danger" onClick={onDelete}>Delete</button>
-          <button type="button" className="btn btn-sm btn-primary" onClick={onClose}>Close</button>
+        <div className="actions">
+          <button type="button" className="wbtn ghost small" onClick={onPin} aria-pressed={note.pinned}>{note.pinned ? "Unpin" : "Pin to the top"}</button>
+          <button type="button" className="wbtn soft small" onClick={onEdit}>Edit this note</button>
+          <button type="button" className="wbtn danger small" onClick={onDelete}>Delete</button>
+          <button type="button" className="wbtn primary small" onClick={onClose}>Close</button>
         </div>
       </div>
     </Modal>

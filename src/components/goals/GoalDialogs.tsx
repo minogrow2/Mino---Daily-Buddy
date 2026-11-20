@@ -6,7 +6,7 @@ import { ErrorNote, Modal } from "@/components/ui/Modal";
 export type FormField = {
   name: string;
   label: string;
-  type?: "text" | "url" | "date" | "number" | "select";
+  type?: "text" | "url" | "date" | "number" | "select" | "textarea";
   required?: boolean;
   max?: number;
   min?: number;
@@ -67,7 +67,16 @@ export function FormModal({
               {f.label}
               {f.hint && <span> · {f.hint}</span>}
             </span>
-            {f.type === "select" ? (
+            {f.type === "textarea" ? (
+              <textarea
+                className="winput"
+                rows={2}
+                value={values[f.name]}
+                placeholder={f.placeholder}
+                maxLength={f.max}
+                onChange={(e) => setValues((v) => ({ ...v, [f.name]: e.target.value }))}
+              />
+            ) : f.type === "select" ? (
               <select
                 className="winput"
                 value={values[f.name]}

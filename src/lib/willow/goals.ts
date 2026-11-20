@@ -124,3 +124,32 @@ export async function loadGoalTiles() {
   for (const a of (acts.data ?? []) as { goal_id: string }[]) monthCounts[a.goal_id] = (monthCounts[a.goal_id] ?? 0) + 1;
   return { monthCounts, milestones: (ms.data ?? []) as { goal_id: string; done: boolean }[], moneyActive: money };
 }
+
+/** AI session log, newest first. */
+export type AiSession = {
+  id: string; day: string; explored: string; learned: string; configured: string; built: string; problems: string; next_plan: string;
+};
+export async function loadAiSessions(): Promise<AiSession[]> {
+  const { data, error } = await createClient()
+    .from("ai_sessions")
+    .select("id,day,explored,learned,configured,built,problems,next_plan")
+    .order("day", { ascending: false })
+    .order("created_at", { ascending: false });
+  fail(error);
+  return (data ?? []) as AiSession[];
+}
+
+/** Tech projects for the goal page: titles and stages only. The Tech Lab loads the logs. */
+export type TechSummary = { id: string; title: string; status: string };
+export async function loadTechSummary(): Promise<TechSummary[]> {
+  const { data, error } = await createClient().from("projects").select("id,title,status").order("created_at").limit(6);
+  fail(error);
+  return (data ?? []) as TechSummary[];
+}
+
+/** Saved content (videos, documentaries, articles) for the reading goal: only the status is needed for the counts. */
+export async function loadReadingSummary(): Promise<{ id: string; status: string }[]> {
+  const { data, error } = await createClient().from("library_items").select("id,status").eq("kind", "content");
+  fail(error);
+  return (data ?? []) as { id: string; status: string }[];
+}

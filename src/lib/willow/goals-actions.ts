@@ -91,3 +91,17 @@ export async function deleteCourse(id: string) {
 export async function setMoneyActive(on: boolean) {
   fail((await createClient().from("user_settings").upsert({ money_active: on }, { onConflict: "user_id" })).error);
 }
+
+/* AI sessions */
+export async function addAiSession(s: {
+  day: string; explored: string; learned: string; configured: string; built: string; problems: string; next_plan: string; minutes: number;
+}) {
+  const sb = createClient();
+  const { minutes, ...text } = s;
+  fail((await sb.from("ai_sessions").insert({ id: newId(), ...text })).error);
+  // Also logged as AI activity, as in the legacy app, so the goal's time and 30-day count include it.
+  fail((await sb.from("activities").insert({ id: newId(), day: s.day, category: "ai", goal_id: "ai", title: "AI session", minutes, offline: false, checklist: false })).error);
+}
+export async function deleteAiSession(id: string) {
+  fail((await createClient().from("ai_sessions").delete().eq("id", id)).error);
+}

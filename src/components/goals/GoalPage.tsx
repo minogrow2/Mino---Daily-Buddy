@@ -3,6 +3,7 @@
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import { GoalNotes } from "@/components/notes/GoalNotes";
+import { GoalBackground } from "./GoalBackground";
 import { Card } from "@/components/ui/Card";
 import { ErrorNote } from "@/components/ui/Modal";
 import { addDays } from "@/lib/dates";
@@ -36,6 +37,7 @@ export function GoalPage({ goal, panels }: { goal: GoalKey; panels?: ReactNode }
         <Link className="small muted" href="/goals">
           ← All goals
         </Link>
+        <GoalBackground goal={goal} />
       </div>
 
       <section className="card reveal goal-hero" style={{ "--tint": GOAL_TINT[goal] } as CSSProperties}>
