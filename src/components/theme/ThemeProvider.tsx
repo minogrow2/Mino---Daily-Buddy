@@ -14,6 +14,24 @@ type LookApi = {
 const LookContext = createContext<LookApi>({ apply: () => {}, preview: () => {} });
 export const useLook = () => useContext(LookContext);
 
+/** Goal pages that have their own background. Finance Trading lives at its own address. */
+const GOAL_PAGES: Record<string, string> = {
+  "/goals/ai": "ai",
+  "/goals/glow": "glow",
+  "/goals/tech": "tech",
+  "/goals/money": "money",
+  "/goals/reading": "reading",
+  "/goals/cs": "cs",
+  "/goals/finance-trading": "trading",
+};
+
+/** The scene slot for a route: "home", the goal's own slot, or "default" for every other page. */
+function sceneSlot(path: string): string {
+  if (path === "/") return "home";
+  const goal = GOAL_PAGES[path.replace(/\/$/, "")];
+  return goal ? `goal-${goal}` : "default";
+}
+
 /** Sets the mode attribute, the colour overrides, and the scene on the page root. */
 function paint(s: WillowSettings, path: string) {
   const root = document.documentElement;
@@ -27,7 +45,7 @@ function paint(s: WillowSettings, path: string) {
     else root.style.removeProperty(name);
   }
 
-  const key = sceneKeyFor(s.scenes, path === "/" ? "home" : "default");
+  const key = sceneKeyFor(s.scenes, sceneSlot(path));
   root.dataset.scene = key;
   document.getElementById("scene")?.style.setProperty("--scene-img", sceneCss(key));
 }

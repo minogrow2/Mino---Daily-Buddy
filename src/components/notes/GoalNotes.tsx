@@ -246,20 +246,22 @@ export function GoalNotes({ goal, name }: { goal: GoalKey; name: string }) {
   }
 
   return (
-    <section ref={sectionRef} id={`goal-notes-${goal}`} className="glass scroll-mt-6 p-5">
-      <div className="mb-3">
-        <p className="text-xs uppercase tracking-wide text-muted">{editId ? "Editing a saved note" : "Thinking"}</p>
-        <h2 className="font-display text-2xl">Notes</h2>
+    <section ref={sectionRef} id={`goal-notes-${goal}`} className="card scroll-mt-6">
+      <div className="card-head">
+        <div>
+          <div className="eyebrow">{editId ? "Editing a saved note" : "Thinking"}</div>
+          <h2>Notes</h2>
+        </div>
       </div>
       <ErrorNote error={error} />
 
       {view === null ? (
-        <p className="py-6 text-center text-sm text-muted">Loading…</p>
+        <p className="empty">Loading…</p>
       ) : (
         <div className="goal-composer">
           <MiniEditor key={composerKey} html={view.html} label={`Notes for ${name}`} placeholder={PLACEHOLDER} onChange={onHtml} />
-          <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-            <label className="btn btn-sm photo-add">
+          <div className="row-inline" style={{ marginTop: 12, justifyContent: "space-between" }}>
+            <label className="wbtn soft small photo-add">
               + Add photo
               <input
                 className="sr-only"
@@ -274,7 +276,7 @@ export function GoalNotes({ goal, name }: { goal: GoalKey; name: string }) {
                 }}
               />
             </label>
-            <span className="text-xs text-muted">Photos are saved to your account.</span>
+            <span className="small muted">Photos are saved to your account.</span>
           </div>
           {view.photoIds.length > 0 && (
             <div className="photo-grid">
@@ -285,15 +287,15 @@ export function GoalNotes({ goal, name }: { goal: GoalKey; name: string }) {
                     <img src={urls[id]} alt="Photo for this note" loading="lazy" />
                   )}
                   <figcaption>
-                    <button type="button" className="btn btn-sm" onClick={() => removePhoto(id)}>Remove photo</button>
+                    <button type="button" className="wbtn ghost small" onClick={() => removePhoto(id)}>Remove photo</button>
                   </figcaption>
                 </figure>
               ))}
             </div>
           )}
-          <div className="mt-3 flex flex-wrap justify-end gap-2">
-            <button type="button" className="btn btn-sm" onClick={discard} disabled={busy}>{editId ? "Cancel edit" : "Clear"}</button>
-            <button type="button" className="btn btn-primary btn-sm" onClick={saveNote} disabled={busy}>
+          <div className="actions" style={{ marginTop: 12 }}>
+            <button type="button" className="wbtn ghost small" onClick={discard} disabled={busy}>{editId ? "Cancel edit" : "Clear"}</button>
+            <button type="button" className="wbtn primary small" onClick={saveNote} disabled={busy}>
               {busy ? "Saving…" : editId ? "Update note" : "Save note"}
             </button>
           </div>
@@ -302,7 +304,7 @@ export function GoalNotes({ goal, name }: { goal: GoalKey; name: string }) {
 
       {notes !== null &&
         (all.length === 0 ? (
-          <div className="mt-4 rounded-xl border border-dashed border-line p-6 text-center text-sm text-muted">
+          <div className="empty">
             No saved notes yet. Write a thought above and save it. It lands here as a page.
           </div>
         ) : (

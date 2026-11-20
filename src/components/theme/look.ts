@@ -98,7 +98,7 @@ export function lookVars(colours: Colours, dark: boolean): Record<string, string
 }
 
 /** The scene key for a page: "home" on the home page, "default" elsewhere. Blank means inherit the default. Unknown keys mean plain cream. */
-export function sceneKeyFor(scenes: Scenes, page: "home" | "default"): string {
+export function sceneKeyFor(scenes: Scenes, page: string): string {
   let v = scenes[page];
   if (v === undefined || v === "") v = scenes.default;
   const hit = SCENES.find((s) => s.key === v);

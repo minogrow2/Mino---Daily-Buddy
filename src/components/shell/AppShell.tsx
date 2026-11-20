@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Suspense, type ReactNode } from "react";
 import { BOTTOM_NAV, NavLinks, NavList } from "./NavLinks";
+import { ReminderBanner } from "./ReminderBanner";
 
 /** The legacy shell: a sidebar on wide screens, a top bar and a bottom bar on phones, one scrolling column of cards. */
 export function AppShell({ children }: { children: ReactNode }) {
@@ -30,6 +31,9 @@ export function AppShell({ children }: { children: ReactNode }) {
             Saved to your account
           </span>
         </div>
+        <Suspense fallback={null}>
+          <ReminderBanner />
+        </Suspense>
         {children}
         <p className="small muted" style={{ marginTop: 28, textAlign: "center" }}>
           Willow is a companion, not a boss. Put the phone down and go outside for a while.

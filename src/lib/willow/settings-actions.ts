@@ -46,7 +46,7 @@ export async function saveReminders(on: boolean) {
 }
 
 /** Sets or (for "") removes one scene key in the scenes column, keeping the others. */
-export async function saveScene(page: "default" | "home", value: string) {
+export async function saveScene(page: string, value: string) {
   const sb = createClient();
   const { data, error } = await sb.from("user_settings").select("scenes").maybeSingle();
   fail(error);
