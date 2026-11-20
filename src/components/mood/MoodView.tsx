@@ -12,7 +12,6 @@ import { setDayPin } from "@/lib/willow/mood-actions";
 import type { MoodPhoto } from "@/lib/willow/types";
 import { usePhotoUrls } from "@/lib/usePhotoUrls";
 import { MoodDayCard } from "./MoodDayCard";
-import { ScreenTimeEditor } from "./ScreenTimeEditor";
 import { MoodDayDialog } from "./MoodDayDialog";
 import { ScrapBook, ScrapPage } from "./ScrapPage";
 
@@ -178,8 +177,6 @@ export function MoodView() {
           </button>
         )}
       </div>
-
-      <ScreenTimeEditor day={cur} today={today} screen={page?.screen ?? {}} onSaved={reload} />
 
       <div className="grid two">
         <MoodDayCard
