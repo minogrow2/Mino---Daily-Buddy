@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Suspense, type ReactNode } from "react";
-import { BOTTOM_NAV, NavLinks, NavList } from "./NavLinks";
+import { NavLinks, NavList } from "./NavLinks";
+import { MobileNav, MobileNavRoute } from "./MobileNav";
 import { ReminderBanner } from "./ReminderBanner";
 
 /** The legacy shell: a sidebar on wide screens, a top bar and a bottom bar on phones, one scrolling column of cards. */
@@ -39,11 +40,9 @@ export function AppShell({ children }: { children: ReactNode }) {
           Willow is a companion, not a boss. Put the phone down and go outside for a while.
         </p>
       </main>
-      <nav className="bottom-nav" aria-label="Main (mobile)" style={{ gridTemplateColumns: `repeat(${BOTTOM_NAV.length}, 1fr)` }}>
-        <Suspense fallback={<NavList variant="bottom" path={null} />}>
-          <NavLinks variant="bottom" />
-        </Suspense>
-      </nav>
+      <Suspense fallback={<MobileNav path={null} />}>
+        <MobileNavRoute />
+      </Suspense>
     </div>
   );
 }
