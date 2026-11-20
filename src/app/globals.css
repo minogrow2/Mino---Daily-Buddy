@@ -48,19 +48,9 @@ body {
   border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
-.ft-bg {
-  min-height: 100%;
-  background:
-    linear-gradient(rgba(251, 246, 239, 0.78), rgba(251, 246, 239, 0.9)),
-    url("/img/ft/forest.jpg") center / cover fixed;
-}
-@media (prefers-color-scheme: dark) {
-  .ft-bg {
-    background:
-      linear-gradient(rgba(33, 26, 24, 0.82), rgba(33, 26, 24, 0.92)),
-      url("/img/ft/forest.jpg") center / cover fixed;
-  }
-}
+/* The Finance Trading pages show the same background as every other page (the scene picked for the goal, behind everything).
+   This class only sets the height, so the forest photo no longer stacks on top of it. */
+.ft-bg { min-height: 100%; }
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
   border-radius: 999px; padding: 0.5rem 1rem; font-size: 0.875rem; font-weight: 500;
